@@ -104,8 +104,6 @@ http://localhost:5000
 
 ## 📸 **Screenshots**
 
-*(Add screenshots here if you want)*
-
 ---
 
 ## 📢 **Contact**
