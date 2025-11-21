@@ -1,0 +1,7 @@
+from .test import test_bp
+from .image_editor_project import image_editor_project_bp
+from .salary_predictor import salary_predictor_project_bp
+from .chatbot_project import chatbot_project_bp
+from .face_extractor_project import face_extractor_project_bp
+from .rock_paper_scissor_project import rock_paper_scissor_project_bp
+from .number_identifier_project import number_identifier_bp
