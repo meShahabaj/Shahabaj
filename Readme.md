@@ -45,6 +45,7 @@ Shahabaj/
 * Pandas
 * ML algorithms
 * Render Deployment
+* Custom YOLO model
 
 ---
 
