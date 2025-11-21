@@ -15,6 +15,7 @@ import zipfile
 
 app = Flask(__name__)
 CORS(app) 
+GROQ_API = os.getenv("GROQ_API")
 
 
 session = ort.InferenceSession("./Utils/face_detection_yolo_custom.onnx", providers=['CPUExecutionProvider'])

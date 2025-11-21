@@ -6,3 +6,4 @@ catboost
 langchain
 langchain-groq
 onnxruntime
+python-dotenv
