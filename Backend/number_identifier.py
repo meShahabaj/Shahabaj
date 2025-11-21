@@ -1,6 +1,6 @@
 import numpy as np
 
-data = np.load("./Utils/MNIST_Weights.npz")
+data = np.load("./Utils/number_prediction_weights.npz")
 
 W1 = data["W1"]
 W2 = data["W2"]

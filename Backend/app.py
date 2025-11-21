@@ -7,7 +7,7 @@ import numpy as np
 import cv2
 from io import BytesIO
 from catboost import CatBoostRegressor
-from number_prediction_weights.npz import forward
+from number_identifier import forward
 import random
 from langchain_groq import ChatGroq
 import onnxruntime as ort
