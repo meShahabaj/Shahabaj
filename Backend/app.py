@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_cors import CORS 
 from routes import test_bp, image_editor_project_bp, salary_predictor_project_bp, number_identifier_bp, rock_paper_scissor_project_bp, face_extractor_project_bp, chatbot_project_bp
+import os
 
 app = Flask(__name__)
 CORS(app) 
