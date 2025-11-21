@@ -1,0 +1,66 @@
+/* Fullscreen animated background */
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.App {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(270deg, #0f0f1a, #1a1a40, #42007a);
+  background-size: 600% 600%;
+  animation: gradientShift 15s ease infinite;
+  color: white;
+  text-align: center;
+  font-family: "Poppins", sans-serif;
+}
+
+/* Title with glow */
+.title {
+  font-size: 2.5rem;
+  text-shadow: 0 0 20px #ff0080, 0 0 30px #7928ca;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { text-shadow: 0 0 10px #ff0080, 0 0 20px #7928ca; }
+  50% { text-shadow: 0 0 25px #ff0080, 0 0 40px #7928ca; }
+  100% { text-shadow: 0 0 10px #ff0080, 0 0 20px #7928ca; }
+}
+
+/* Response text */
+.response {
+  opacity: 0;
+  font-size: 1.5rem;
+  transition: opacity 0.8s ease, transform 0.8s ease;
+  transform: scale(0.8);
+}
+
+.response.show {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Play button */
+.play-btn {
+  margin-top: 30px;
+  padding: 15px 40px;
+  font-size: 20px;
+  font-weight: bold;
+  border: none;
+  border-radius: 50px;
+  background: linear-gradient(90deg, #ff0080, #7928ca);
+  color: white;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.3s;
+}
+
+.play-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 20px #ff0080, 0 0 40px #7928ca;
+}
