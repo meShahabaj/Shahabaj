@@ -14,7 +14,9 @@ from router import (
 import os
 
 app = FastAPI()
-
+@app.get("/")
+def root():
+    return {"status": "ok"}
 # CORS
 app.add_middleware(
     CORSMiddleware,
