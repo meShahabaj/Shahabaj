@@ -1,9 +1,11 @@
-flask
-flask_cors 
-opencv-python
-numpy
 catboost
-langchain
+faiss-cpu
+fastapi
 langchain-groq
+numpy
 onnxruntime
+opencv-python
 python-dotenv
+python-multipart
+sentence-transformers
+uvicorn
