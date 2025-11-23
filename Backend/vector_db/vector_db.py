@@ -29,5 +29,5 @@ def query():
     print([texts[i] for i in I[0]])
 
 if __name__ == "__main__":
-    # main()
+    main()
     query()

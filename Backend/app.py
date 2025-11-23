@@ -1,21 +1,42 @@
-from flask import Flask
-from flask_cors import CORS 
-from routes import test_bp, image_editor_project_bp, salary_predictor_project_bp, number_identifier_bp, rock_paper_scissor_project_bp, face_extractor_project_bp, chatbot_project_bp
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
+from router import (
+    test_router,
+    image_editor_router,
+    salary_predictor_router,
+    chatbot_router,
+    face_extractor_router,
+    rps_router,
+    number_identifier_router,
+)
+
 import os
 
-app = Flask(__name__)
-CORS(app) 
+app = FastAPI()
 
-PORT = os.getenv("PORT")
+# CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"], 
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
-app.register_blueprint(test_bp)
-app.register_blueprint(image_editor_project_bp)
-app.register_blueprint(face_extractor_project_bp)
-app.register_blueprint(salary_predictor_project_bp)
-app.register_blueprint(chatbot_project_bp)
-app.register_blueprint(number_identifier_bp)
-app.register_blueprint(rock_paper_scissor_project_bp)
+# Include FastAPI routers (equivalent to Flask blueprints)
+app.include_router(test_router)
+app.include_router(image_editor_router)
+app.include_router(face_extractor_router)
+app.include_router(salary_predictor_router)
+app.include_router(chatbot_router)
+app.include_router(number_identifier_router)
+app.include_router(rps_router)
 
-if __name__ == '__main__':
-    port = PORT
-    app.run(host='0.0.0.0', port=port,debug=True)
+
+# For local development
+if __name__ == "__main__":
+    import uvicorn
+
+    port = int(os.getenv("PORT"))
+    uvicorn.run("app:app", host="0.0.0.0", port=port, reload=True)
