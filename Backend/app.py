@@ -5,7 +5,8 @@ import os
 
 app = Flask(__name__)
 CORS(app) 
-GROQ_API = os.getenv("GROQ_API")
+
+PORT = os.getenv("PORT")
 
 app.register_blueprint(test_bp)
 app.register_blueprint(image_editor_project_bp)
@@ -16,5 +17,5 @@ app.register_blueprint(number_identifier_bp)
 app.register_blueprint(rock_paper_scissor_project_bp)
 
 if __name__ == '__main__':
-    port = 5000
+    port = PORT
     app.run(host='0.0.0.0', port=port,debug=True)
