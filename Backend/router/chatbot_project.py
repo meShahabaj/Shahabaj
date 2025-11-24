@@ -3,7 +3,9 @@ from pydantic import BaseModel
 from langchain_groq import ChatGroq
 from dotenv import load_dotenv
 import os
-from chat_imports import model, faiss_index, texts
+from sentence_transformers import SentenceTransformer
+import faiss
+import numpy as np
 
 load_dotenv()
 router = APIRouter()
@@ -11,14 +13,29 @@ router = APIRouter()
 GROQ_API = os.getenv("GROQ_API")
 temperature = 0.7
 
+model = None
+faiss_index = None
+texts = None
+
+def ensure_loaded():
+    global model, faiss_index, texts
+    if model is None:
+        print("Loading model")
+        model = SentenceTransformer("all-MiniLM-L6-v2")
+    if faiss_index is None:
+        print("Loading index")
+        faiss_index = faiss.read_index("faiss.index", faiss.IO_FLAG_MMAP)
+    if texts is None:
+        print("Loading text")
+        texts = np.load("texts.npy", allow_pickle=True)
+
 class UserRequest(BaseModel):
     text: str
 
 def retrieve_context(query: str):
-    q_emb = model.encode([query]).astype("float32")
-    D, I = faiss_index.search(q_emb, 1)
-
-    
+    ensure_loaded()
+    q_emb = model.encode([query]).astype("float16")
+    D, I = faiss_index.search(q_emb, 1)    
 
     context = texts[I[0][0]]
     context = context.replace("Shahabaj Khan", "ADMIN_NAME")

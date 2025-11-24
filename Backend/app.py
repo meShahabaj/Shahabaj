@@ -28,6 +28,8 @@ app.add_middleware(
 def root():
     return {"status": "ok"}
 
+
+
 print("Registered routes:")
 for route in app.routes:
     print(route.path)
