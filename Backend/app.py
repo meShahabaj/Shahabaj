@@ -5,7 +5,7 @@ from router import (
     test_router,
 #     image_editor_router,
 #     salary_predictor_router,
-#     chatbot_router,
+    chatbot_router,
 #     face_extractor_router,
 #     rps_router,
 #     number_identifier_router,
@@ -37,7 +37,7 @@ app.include_router(test_router)
 # app.include_router(image_editor_router)
 # app.include_router(face_extractor_router)
 # app.include_router(salary_predictor_router)
-# app.include_router(chatbot_router)
+app.include_router(chatbot_router)
 # app.include_router(number_identifier_router)
 # app.include_router(rps_router)
 
