@@ -1,15 +1,15 @@
 import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-# from router import (
-#     test_router,
+from router import (
+    test_router,
 #     image_editor_router,
 #     salary_predictor_router,
 #     chatbot_router,
 #     face_extractor_router,
 #     rps_router,
 #     number_identifier_router,
-# )
+)
 import os
 
 app = FastAPI()
