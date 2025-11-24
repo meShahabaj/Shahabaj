@@ -3,7 +3,7 @@ from pydantic import BaseModel
 from langchain_groq import ChatGroq
 from dotenv import load_dotenv
 import os
-# from chat_imports import model, faiss_index, texts
+from chat_imports import model, faiss_index, texts
 
 load_dotenv()
 router = APIRouter()
@@ -65,10 +65,10 @@ def chat_req(query, context):
 async def chat(req: UserRequest):
     user_msg = req.text
     print(req.text)
-    # context = retrieve_context(user_msg)
+    context = retrieve_context(user_msg)
     
-    # answer = chat_req(user_msg, context)
-    # print(answer)
+    answer = chat_req(user_msg, context)
+    print(answer)
 
 
-    return "answer"
+    return answer

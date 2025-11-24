@@ -10,3 +10,5 @@ wheels/
 *.toml
 *.lock
 *.env
+
+about_me.txt
