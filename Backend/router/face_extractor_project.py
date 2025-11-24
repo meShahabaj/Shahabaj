@@ -19,6 +19,7 @@ output_name = session.get_outputs()[0].name
 
 @router.post("/projects/face_extractor/upload")
 async def face_extractor(image: UploadFile = File(...)):
+    print("f")
     # Read uploaded file
     file_bytes = await image.read()
     np_arr = np.frombuffer(file_bytes, np.uint8)

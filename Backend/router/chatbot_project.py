@@ -1,8 +1,9 @@
 from fastapi import APIRouter
 from pydantic import BaseModel
 from langchain_groq import ChatGroq
+from dotenv import load_dotenv
 import os
-
+load_dotenv()
 router = APIRouter()
 
 GROQ_API = os.getenv("GROQ_API")
@@ -29,4 +30,4 @@ async def chat(req: UserRequest):
     ]
 
     response = llm.invoke(messages)  # returns AIMessage
-    return {"response": response.content}
+    return  response.content

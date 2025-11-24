@@ -26,6 +26,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+print("Registered routes:")
+for route in app.routes:
+    print(route.path)
 
 # Include FastAPI routers (equivalent to Flask blueprints)
 app.include_router(test_router)
@@ -35,7 +38,6 @@ app.include_router(salary_predictor_router)
 app.include_router(chatbot_router)
 app.include_router(number_identifier_router)
 app.include_router(rps_router)
-
 
 # For local development
 if __name__ == "__main__":

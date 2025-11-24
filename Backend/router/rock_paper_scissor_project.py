@@ -29,8 +29,4 @@ async def gesture_detection(request: Request):
         result = "Computer Won"
 
     # Response
-    return {
-        "user": user_choice,
-        "computer": computer_choice,
-        "result": result
-    }
+    return result

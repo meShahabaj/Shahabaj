@@ -34,7 +34,7 @@ const FaceExtractor = () => {
         body: formData,
       });
 
-      if (!response.ok) throw new Error('Upload failed');
+      if (!response.ok) throw new Error('Face Not identified');
 
       // Get ZIP blob
       const zipBlob = await response.blob();

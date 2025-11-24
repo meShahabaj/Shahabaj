@@ -16,22 +16,23 @@ export default function SalaryPredictor() {
   const [prediction, setPrediction] = useState(null);
 
   const handleSubmit = async (e) => {
-    
+
     e.preventDefault();
     setLoading(true);
 
     const data = { age, experience, gender, education, job };
     try {
       const res = await axios.post(`${BACKEND_URL}/projects/salary_predictor/predict`, data);
-      setPrediction(res.data);
+
+      setPrediction(res.data.prediction);
     } finally {
-      setLoading(false); 
+      setLoading(false);
     }
   };
 
   return (
     <div className="page-container">
-      <EasyConnect/>
+      <EasyConnect />
 
       <form onSubmit={handleSubmit} className="form-card">
 
