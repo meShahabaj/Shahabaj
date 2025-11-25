@@ -37,7 +37,7 @@ const Home = () => {
   // CV Download
   const downloadCV = () => {
     const link = document.createElement("a");
-    link.href = "/Data/Shahabaj_Khan_CV.pdf";
+    link.href = "/Data/CV.pdf";
     link.download = "Shahabaj_Khan_CV.pdf";
     link.click();
   };
