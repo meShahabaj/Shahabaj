@@ -13,7 +13,7 @@ load_dotenv()
 router = APIRouter()
 
 GROQ_API = os.getenv("GROQ_API")
-temperature = 0.7
+temperature = 0.8
 
 # --- Globals ---
 tokenizer = None
@@ -21,23 +21,15 @@ ort_session = None
 faiss_index = None
 texts = None
 
-def print_ram(msg=""):
-    process = psutil.Process(os.getpid())
-    ram_in_mb = process.memory_info().rss / (1024 ** 2)
-    print(f"{msg} RAM usage: {ram_in_mb:.2f} MB")
-
 def ensure_loaded():
     global tokenizer, ort_session, faiss_index, texts
     if tokenizer is None or ort_session is None:
-        print("Loading ONNX model and tokenizer...")
         tokenizer = AutoTokenizer.from_pretrained("sentence-transformers/all-MiniLM-L6-v2")
         ort_session = ort.InferenceSession("./Utils/model_quint8_avx2.onnx")  # path to your ONNX model
-        print_ram("After loading ONNX model")
+        
     if faiss_index is None:
-        print("Loading FAISS index...")
         faiss_index = faiss.read_index("./Utils/faiss.index", faiss.IO_FLAG_MMAP)
     if texts is None:
-        print("Loading texts...")
         texts = np.load("./Utils/texts.npy", allow_pickle=True)
 
 class UserRequest(BaseModel):
@@ -62,7 +54,6 @@ def retrieve_context(query: str):
     context = context.replace("Shahabaj Khan", "ADMIN_NAME")
     context = context.replace("Shahabaj", "ADMIN_NAME")
 
-    print(context)
     return context
 
 def chat_req(query, context):
@@ -100,10 +91,8 @@ def chat_req(query, context):
 @router.post("/chatbot/user_request")
 async def chat(req: UserRequest):
     user_msg = req.text
-    print(f"User query: {user_msg}")
     
     context = retrieve_context(user_msg)
     answer = chat_req(user_msg, context)
     
-    print(f"Answer: {answer}")
     return answer
