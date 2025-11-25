@@ -4,4 +4,4 @@ router = APIRouter()
 
 @router.get('/test')
 def test():
-    return "Backend Wake up successfully"
+    return {"success": True}

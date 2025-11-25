@@ -5,7 +5,7 @@ import Typewriter from "typewriter-effect";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import Skill from "./skills";
-import EasyConnect from "../EasyConnect";
+import EasyConnect from "../../App_utils/EasyConnect";
 import Chatbot from "../ChatBot/Chatbot";
 import VideoSlider from "./VideoSlider";
 
@@ -172,9 +172,9 @@ const Home = () => {
           ))}
         </div>
       </div>
-      <div style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
         <h2 className="page_projects_h2">Videos</h2>
-        <VideoSlider  />
+        <VideoSlider />
       </div>
     </div>
   );

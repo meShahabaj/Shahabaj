@@ -1,10 +1,9 @@
-import { contacts } from "./Home/Home_utils";
+import { contacts } from "../Pages/Home/Home_utils";
 
 export default function EasyConnect() {
-
     return (
         <div style={{
-            zIndex: "1000", position: "fixed",
+            zIndex: "100", position: "fixed",
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",

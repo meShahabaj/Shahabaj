@@ -9,9 +9,8 @@ import { Code, Database, Cpu, Server, Image as ImgIcon, Cloud } from "lucide-rea
 export const headerButtons = [
   { name: "Home", icon: <FcHome className="icon" /> },
   { name: "About", icon: <FcManager className="icon" /> },
-  { name: "Skills", icon: <FcComboChart className="icon" /> },{ name: "Projects", icon: <FcOpenedFolder className="icon" /> },
+  { name: "Skills", icon: <FcComboChart className="icon" /> }, { name: "Projects", icon: <FcOpenedFolder className="icon" /> },
   { name: "Certificates", icon: <FcInspection className="icon" /> },
-  
   { name: "Download CV", icon: <FcDownload className="icon" /> },
 ];
 
@@ -29,7 +28,7 @@ export const projects = [
     "title": "Stone Paper Scissor Game with Live Gesture",
     "pic": "Stone_paper_scissor.jpg",
     "address": "/projects/stone_paper_scissor"
-  },{
+  }, {
     "title": "Face Extractor From Image",
     "pic": "Face_locator.jpg",
     "address": "/projects/face_extractor"
@@ -39,7 +38,7 @@ export const projects = [
     "pic": "Salary_prediction_img.jpeg",
     "address": "/projects/salary_predictor"
   },
-  
+
   {
     "title": "Number Identifier",
     "pic": "Mnist.png",

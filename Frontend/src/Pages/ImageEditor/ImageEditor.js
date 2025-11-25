@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import './ImageEditor.css';
-import EasyConnect from '../EasyConnect';
+import EasyConnect from '../../App_utils/EasyConnect';
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
 
@@ -58,7 +58,7 @@ const ImageEditor = () => {
     } catch (err) {
       alert(err.message);
     } finally {
-      setLoading(false); 
+      setLoading(false);
     }
   };
 

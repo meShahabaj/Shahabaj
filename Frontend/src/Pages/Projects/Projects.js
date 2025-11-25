@@ -1,12 +1,12 @@
 import { pages } from "./Projects_util";
 import { Link } from "react-router-dom";
 import "./Projects.css";
-import EasyConnect from "../EasyConnect";
+import EasyConnect from "../../App_utils/EasyConnect";
 
 const Projects = () => {
   return (
     <div className="projects">
-      <EasyConnect/>
+      <EasyConnect />
       <h1 className="projects_h1">Projects</h1>
 
       <div className="Projects-container">
@@ -22,7 +22,7 @@ const Projects = () => {
           </Link>
         ))}
       </div>
-      </div>
+    </div>
   );
 };
 

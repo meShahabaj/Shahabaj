@@ -23,18 +23,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-#------------- STARTING ROUTE ---------------#
+#------------- STARTING ROUTE ---------------
 @app.api_route("/", methods=["GET", "HEAD"])
 def root():
     return {"status": "ok"}
 
-
-
-print("Registered routes:")
-for route in app.routes:
-    print(route.path)
-
-#------- REGISTER ROUTES ------------#
+#------- REGISTER ROUTES ------------
 app.include_router(test_router)
 app.include_router(image_editor_router)
 app.include_router(face_extractor_router)

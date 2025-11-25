@@ -1,15 +1,19 @@
 import { HashRouter as Router, Routes, Route } from "react-router-dom";
-import { App_utils, Loading } from "./App_utils.js";
+import { App_utils } from "./App_utils/App_utils.tsx";
 import { Suspense } from "react";
-import { useWakeServer } from "./useWakeServer.js";
+import { WakeServer } from "./App_utils/WakeServer.js";
+import Loading from "./App_utils/Loading.tsx";
 
 const App = () => {
-  useWakeServer();
+  // Request to wakeup server
+  WakeServer();
 
   return (
     <Router>
       <Suspense fallback={<Loading />}>
         <Routes>
+
+          {/* Importing routes dynamically */}
           {App_utils.map(({ path, element: Component }) => (
             <Route key={path} path={path} element={<Component />} />
           ))}

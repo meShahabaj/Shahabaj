@@ -1,3 +1,4 @@
+#--------------- ALL ROUTES ------------------
 from .test import router as test_router
 from .image_editor_project import router as image_editor_router
 from .salary_predictor import router as salary_predictor_router

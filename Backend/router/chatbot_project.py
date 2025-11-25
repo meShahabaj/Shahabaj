@@ -1,13 +1,12 @@
 from fastapi import APIRouter
 from pydantic import BaseModel
-from langchain_groq import ChatGroq
 from dotenv import load_dotenv
+from langchain_groq import ChatGroq
 import os
 import onnxruntime as ort
 from transformers import AutoTokenizer
 import numpy as np
 import faiss
-import psutil
 
 load_dotenv()
 router = APIRouter()
@@ -21,6 +20,7 @@ ort_session = None
 faiss_index = None
 texts = None
 
+# ------------------ LOADING MODELS ---------------------
 def ensure_loaded():
     global tokenizer, ort_session, faiss_index, texts
     if tokenizer is None or ort_session is None:
@@ -35,15 +35,15 @@ def ensure_loaded():
 class UserRequest(BaseModel):
     text: str
 
-# --- Function to get embeddings from ONNX model ---
+# --- Get embeddings from ONNX model ---
 def get_embeddings(texts_list):
     inputs = tokenizer(texts_list, padding=True, truncation=True, return_tensors="np")
     ort_inputs = {k: v for k, v in inputs.items()}
     embeddings = ort_session.run(None, ort_inputs)[0]  # shape: (batch, seq_len, hidden)
-    # Mean pooling over sequence
     embeddings = embeddings.mean(axis=1).astype("float32")
     return embeddings
 
+# ---------- Finding Context ----------
 def retrieve_context(query: str):
     ensure_loaded()
     q_emb = get_embeddings([query])
@@ -56,15 +56,14 @@ def retrieve_context(query: str):
 
     return context
 
+# ----------- Feeding to LLM ----------------
 def chat_req(query, context):
     query_masked = query.replace("Shahabaj Khan", "ADMIN_NAME").replace("Shahabaj", "ADMIN_NAME")
-    
     llm = ChatGroq(
-        model="openai/gpt-oss-120b",
+        model="openai/gpt-oss-20b",
         temperature=temperature,
         api_key=GROQ_API
     )
-
     messages = [
         {
             "role": "system",
@@ -82,12 +81,12 @@ def chat_req(query, context):
             "content": query_masked
         }
     ]
-
     response = llm.invoke(messages)
     # Unmask before returning
     answer = response.content.replace("ADMIN_NAME", "Shahabaj Khan").replace("ADMIN_NAME", "Shahabaj")
     return answer
 
+# ----------- ROUTE ------------------
 @router.post("/chatbot/user_request")
 async def chat(req: UserRequest):
     user_msg = req.text
