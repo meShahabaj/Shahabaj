@@ -11,3 +11,4 @@ python-dotenv>=1.2.1,
 python-multipart>=0.0.20,
 uvicorn>=0.38.0,
 transformers>=4.57.1
+pypdf2>=3.0.1
