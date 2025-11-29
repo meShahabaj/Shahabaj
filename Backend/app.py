@@ -8,7 +8,7 @@ from router import (
     chatbot_router,
     face_extractor_router,
     rps_router,
-    number_identifier_router,
+    number_identifier_router,resume_scorer_router
 )
 import os
 
@@ -36,6 +36,7 @@ app.include_router(salary_predictor_router)
 app.include_router(chatbot_router)
 app.include_router(number_identifier_router)
 app.include_router(rps_router)
+app.include_router(resume_scorer_router)
 
 if __name__ == "__main__":  
     port = int(os.getenv("PORT", 8000))

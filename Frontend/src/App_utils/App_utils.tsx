@@ -14,5 +14,7 @@ export const App_utils: App_utils_items[] = [
   { path: "/projects/number_identifier", element: lazy(() => import("../Pages/NumberIdentifier/NumberIdentifier.js")) },
   { path: "/projects/stone_paper_scissor", element: lazy(() => import("../Pages/StonePaperScissor/StonePaperScissor.js")) },
   { path: "/projects/face_extractor", element: lazy(() => import("../Pages/FaceExtractor/FaceExtractor.js")) },
-  { path: "/assistant", element: lazy(() => import("../Pages/Assistant/Assistant.js")) },
+  { path: "/projects/assistant", element: lazy(() => import("../Pages/Assistant/Assistant.js")) },
+  { path: "/projects/resume_scorer", element: lazy(() => import("../Pages/Resume_scorer/Resume_scorer.tsx")) },
 ];
+

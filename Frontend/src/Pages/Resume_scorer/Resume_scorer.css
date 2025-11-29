@@ -1,0 +1,131 @@
+.resume-scorer-container {
+    max-width: 760px;
+    margin: 50px auto;
+    padding: 35px;
+    background: #ffffff;
+    border-radius: 24px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+    font-family: "Inter", sans-serif;
+    backdrop-filter: blur(8px);
+}
+
+.title {
+    font-size: 2.2rem;
+    font-weight: 800;
+    text-align: center;
+    margin-bottom: 25px;
+    background: linear-gradient(90deg, #6366f1, #8b5cf6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.input-group {
+    margin-bottom: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.label {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #2b2b2b;
+}
+
+.file-input,
+.select-input {
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: 14px;
+    border: 1px solid #d6d6d6;
+    font-size: 1rem;
+    background: #f9f9fb;
+    transition: 0.2s ease;
+}
+
+.file-input:hover,
+.select-input:hover {
+    border-color: #7d7d7d;
+    background: #f1f1f7;
+}
+
+.file-input:focus,
+.select-input:focus {
+    outline: none;
+    border-color: #6366f1;
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.25);
+    background: #ffffff;
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    color: white;
+    font-size: 1.15rem;
+    font-weight: 700;
+    border: none;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: 0.25s ease;
+    box-shadow: 0 5px 14px rgba(99, 102, 241, 0.35);
+}
+
+.submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 18px rgba(99, 102, 241, 0.45);
+}
+
+.submit-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.score-result {
+    margin-top: 25px;
+    padding: 18px;
+    font-size: 1.25rem;
+    background: #eef2ff;
+    border-left: 6px solid #6366f1;
+    border-radius: 14px;
+    animation: fadeIn 0.4s ease;
+}
+
+.error-message {
+    margin-top: 25px;
+    padding: 15px;
+    background: #ffe5e7;
+    border-left: 6px solid #e53935;
+    color: #b71c1c;
+    border-radius: 14px;
+    animation: fadeIn 0.4s ease;
+}
+
+.pdf-preview {
+    margin-top: 30px;
+    padding: 22px;
+    background: #fafafa;
+    border-radius: 20px;
+    box-shadow: inset 0 0 14px rgba(0, 0, 0, 0.06);
+    animation: fadeIn 0.4s ease;
+}
+
+.pdf-preview iframe {
+    width: 100%;
+    height: 480px;
+    border-radius: 14px;
+    border: 1px solid #d0d0d0;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

@@ -25,26 +25,33 @@ export const projects = [
     "pic": "face-blurrring-featured-image.avif",
     "address": "/projects/image_editor"
   }, {
-    "title": "Stone Paper Scissor Game with Live Gesture",
-    "pic": "Stone_paper_scissor.jpg",
-    "address": "/projects/stone_paper_scissor"
-  }, {
     "title": "Face Extractor From Image",
     "pic": "Face_locator.jpg",
     "address": "/projects/face_extractor"
+  }, {
+    "title": "AI(RAG) Chat Bot about me",
+    "pic": "pexels-thirdman-5592313.jpg",
+    "address": "/projects/assistant"
+  },
+  {
+    "title": "Stone Paper Scissor Game with Live Gesture",
+    "pic": "Stone_paper_scissor.jpg",
+    "address": "/projects/stone_paper_scissor"
   },
   {
     "title": "Salary Predictor",
     "pic": "Salary_prediction_img.jpeg",
     "address": "/projects/salary_predictor"
   },
-
   {
     "title": "Number Identifier",
     "pic": "Mnist.png",
     "address": "/projects/number_identifier"
+  }, {
+    "title": "Resume Scorer",
+    "pic": "Mnist.png",
+    "address": "/projects/resume_scorer"
   },
-
 ]
 export const contacts = [{
   "title": <SiGmail
