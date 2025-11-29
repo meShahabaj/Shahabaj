@@ -58,24 +58,26 @@ const ResumeScorer: React.FC = () => {
             setLoading(true);
             setError(null);
 
-            const response = await axios.post(
-                `${BACKEND_URL}/projects/resume_scorer`,
-                formData,
-                {
-                    headers: {
-                        "Content-Type": "multipart/form-data",
-                    },
-                }
-            );
+            const response = await fetch(`${BACKEND_URL}/projects/resume_scorer`, {
+                method: "POST",
+                body: formData,
+                // ❌ DO NOT SET CONTENT-TYPE HERE
+            });
 
-            setScore(response.data);
+            if (!response.ok) {
+                throw new Error("Server returned an error");
+            }
+
+            const result = await response.json();
+            setScore(result);
         } catch (err: any) {
-            console.error("Upload error:", err.response?.data || err.message);
+            console.error("Upload error:", err.message);
             setError("Failed to upload resume. Please try again.");
         } finally {
             setLoading(false);
         }
     };
+
 
     return (
         <div className="resume-scorer-container modern-card">
