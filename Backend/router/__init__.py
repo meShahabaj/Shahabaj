@@ -6,3 +6,4 @@ from .chatbot_project import router as chatbot_router
 from .face_extractor_project import router as face_extractor_router
 from .rock_paper_scissor_project import router as rps_router
 from .number_identifier_project import router as number_identifier_router
+from .resume_scorer_project import router as resume_scorer_router

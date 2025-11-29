@@ -53,7 +53,7 @@ export default function Chatbot() {
         isOpen && (<>
           <button
             className="chatbot-toggle">
-            <IoIosExpand onClick={() => navigate("/assistant")} />
+            <IoIosExpand onClick={() => navigate("/projects/assistant")} />
           </button>
         </>)
       }
