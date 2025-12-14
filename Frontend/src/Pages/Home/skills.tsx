@@ -5,7 +5,10 @@ import { defaultSkills, categories } from "./Home_utils.tsx";
 /* =====================
    TYPES
 ===================== */
-
+interface SkillsProps {
+  skills?: Skill[];
+  refProp?: React.RefObject<HTMLElement | null>;
+}
 interface Skill {
   id: number;
   name: string;
@@ -44,7 +47,10 @@ const item = {
    COMPONENT
 ===================== */
 
-export default function Skills({ skills = defaultSkills }: SkillsProps) {
+export default function Skills({
+  skills = defaultSkills,
+  refProp,
+}: SkillsProps) {
   const GENERIC_SKILL_ICON =
     "https://cdn-icons-png.flaticon.com/512/2103/2103658.png";
 
@@ -58,7 +64,9 @@ export default function Skills({ skills = defaultSkills }: SkillsProps) {
 
   return (
 
-    <section className="relative bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 overflow-hidden py-20 px-6">
+    <section
+      ref={refProp}
+      className="relative bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 overflow-hidden py-20 px-6">
 
 
       {/* Header */}

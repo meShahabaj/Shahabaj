@@ -81,7 +81,7 @@ export default function Home(): JSX.Element {
 
       <SectionMotion>
         <Suspense fallback={<SectionLoader />}>
-          <Skills />
+          <Skills refProp={skillRef} />
         </Suspense>
       </SectionMotion>
 
