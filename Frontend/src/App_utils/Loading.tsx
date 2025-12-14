@@ -5,48 +5,18 @@ interface LoadingProps {
 }
 
 const Loading: FC<LoadingProps> = ({ message = "Loading..." }) => {
-    const containerStyle: React.CSSProperties = {
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "100vh",
-        fontFamily: "sans-serif",
-        color: "#333",
-        gap: "1rem",
-    };
-
-    const dotsContainerStyle: React.CSSProperties = {
-        display: "flex",
-        gap: "10px",
-    };
-
-    const dotStyle = (delay: number): React.CSSProperties => ({
-        width: "15px",
-        height: "15px",
-        borderRadius: "50%",
-        backgroundColor: "#3b82f6",
-        animation: `bounce 0.6s ${delay}s infinite alternate`,
-    });
-
-    const keyframes = `
-    @keyframes bounce {
-      from { transform: translateY(0); }
-      to { transform: translateY(-20px); }
-    }
-  `;
-
-    const delays = [0, 0.2, 0.4];
-
     return (
-        <div style={containerStyle}>
-            <style>{keyframes}</style>
-            <div style={dotsContainerStyle}>
-                {delays.map((d, i) => (
-                    <div key={i} style={dotStyle(d)} />
-                ))}
+        <div className="flex flex-col justify-center items-center h-screen bg-gray-900 font-sans gap-6">
+            {/* Animated Dots */}
+            <div className="flex gap-3">
+                <div className="w-5 h-5 rounded-full bg-blue-500 animate-bounce-smooth"></div>
+                <div className="w-5 h-5 rounded-full bg-blue-500 animate-bounce-smooth-200"></div>
+                <div className="w-5 h-5 rounded-full bg-blue-500 animate-bounce-smooth-400"></div>
             </div>
-            <p>{message}</p>
+
+
+            {/* Loading Message */}
+            <p className="text-white text-lg font-medium opacity-90">{message}</p>
         </div>
     );
 };

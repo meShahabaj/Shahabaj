@@ -2,7 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import "./SalaryPredictor.css";
 import jobs from "./SalaryPredictorUtils";
-import EasyConnect from "../../App_utils/EasyConnect";
+import EasyConnect from "../../App_utils/EasyConnect.tsx";
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
 export default function SalaryPredictor() {

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./NumberIdentifier.css";
-import EasyConnect from "../../App_utils/EasyConnect";
+import EasyConnect from "../../App_utils/EasyConnect.tsx";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 

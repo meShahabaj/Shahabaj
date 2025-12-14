@@ -7,7 +7,7 @@ interface App_utils_items {
 
 // ROUTES IMPORT
 export const App_utils: App_utils_items[] = [
-  { path: "/", element: lazy(() => import("../Pages/Home/Home.js")) },
+  { path: "/", element: lazy(() => import("../Pages/Home/Home.tsx")) },
   { path: "/projects", element: lazy(() => import("../Pages/Projects/Projects.js")) },
   { path: "/projects/salary_predictor", element: lazy(() => import("../Pages/SalaryPredictor/SalaryPredictor.js")) },
   { path: "/projects/image_editor", element: lazy(() => import("../Pages/ImageEditor/ImageEditor.js")) },

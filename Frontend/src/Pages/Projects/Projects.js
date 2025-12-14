@@ -1,7 +1,7 @@
 import { pages } from "./Projects_util";
 import { Link } from "react-router-dom";
 import "./Projects.css";
-import EasyConnect from "../../App_utils/EasyConnect";
+import EasyConnect from "../../App_utils/EasyConnect.tsx";
 
 const Projects = () => {
   return (

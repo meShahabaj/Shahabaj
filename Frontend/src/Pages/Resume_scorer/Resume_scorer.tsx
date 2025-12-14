@@ -3,7 +3,7 @@ import axios from "axios";
 import Select from "react-select";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
-import EasyConnect from "../../App_utils/EasyConnect";
+import EasyConnect from "../../App_utils/EasyConnect.tsx";
 import "./Resume_scorer.css";
 import { JOBS } from "./Resume_scorer_utils";
 
@@ -16,6 +16,7 @@ const ResumeScorer: React.FC = () => {
     const [score, setScore] = useState<number | null>(null);
     const [error, setError] = useState<string | null>(null);
     const [jobTitle, setJobTitle] = useState<string | null>(null);
+    const [issues, setIssues] = useState<Array<any> | null>(null);
 
     const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -52,9 +53,9 @@ const ResumeScorer: React.FC = () => {
                 { headers: { "Content-Type": "multipart/form-data" } }
             );
 
-            setScore(Math.round(response.data));
+            setIssues(response.data["Issues"]);
+            setScore(Math.round(response.data["Similarity score"]));
         } catch (err: any) {
-            console.error("Upload error:", err.response?.data || err.message);
             setError("Failed to upload resume. Please try again.");
         } finally {
             setLoading(false);
@@ -64,67 +65,73 @@ const ResumeScorer: React.FC = () => {
     return (
         <>
             <EasyConnect />
-            <div className="resume-scorer-container modern-card">
+            <div className="resume-scorer-modern">
+                <h1 className="modern-title">AI Resume Scorer</h1>
 
-                <h1 className="title">Resume Scorer</h1>
+                <div className="modern-grid">
+                    {/* Upload Panel */}
+                    <div className="modern-panel">
+                        <label className="modern-label">Upload Resume</label>
+                        <input
+                            type="file"
+                            accept=".pdf,.doc,.docx"
+                            className="modern-file-input"
+                            onChange={handleFileUpload}
+                        />
 
-                <div className="scorer-columns">
-                    {/* Left Column */}
-                    <div className="left-column">
-                        <div className="input-group">
-                            <label className="label">Upload Resume</label>
-                            <input
-                                type="file"
-                                accept=".pdf,.doc,.docx"
-                                className="file-input"
-                                onChange={handleFileUpload}
-                            />
-                        </div>
+                        <label className="modern-label">Select Job Role</label>
+                        <Select
+                            options={JOBS}
+                            onChange={(option: any) => setJobTitle(option.value)}
+                            placeholder="Search job roles..."
+                            isSearchable
+                        />
 
-                        <div className="input-group">
-                            <label className="label">Select Job Role</label>
-                            <Select
-                                options={JOBS}
-                                onChange={(option: any) => setJobTitle(option.value)}
-                                placeholder="Search or select a job role..."
-                                isSearchable
-                            />
-                        </div>
-
-                        <button className="submit-btn" onClick={handleSubmit} disabled={loading}>
-                            {loading ? "Uploading..." : "Submit"}
+                        <button
+                            className="modern-btn"
+                            onClick={handleSubmit}
+                            disabled={loading}
+                        >
+                            {loading ? "Analyzing..." : "Score Resume"}
                         </button>
 
-                        {error && <div className="error-message modern-error">{error}</div>}
+                        {error && <div className="modern-error-box">{error}</div>}
+
+                        {issues && issues.length > 0 && (
+                            <div className="modern-issues">
+                                {issues.map((i, idx) => (
+                                    <div key={idx} className="issue-card">
+                                        <strong>{i.severity}:</strong> {i.name}
+                                    </div>
+                                ))}
+                            </div>
+                        )}
                     </div>
 
-                    {/* Right Column */}
-                    <div className="right-column">
+                    {/* Results Panel */}
+                    <div className="modern-results">
                         {score !== null && (
-                            <div className="score-speedometer modern-box">
+                            <div className="score-card">
                                 <h3>Resume Score</h3>
-                                <div style={{ width: "180px", height: "180px", margin: "auto" }}>
-                                    <CircularProgressbar
-                                        value={score}
-                                        text={`${score}%`}
-                                        styles={buildStyles({
-                                            textSize: "22px",
-                                            pathColor: `rgba(99, 102, 241, ${score / 100})`,
-                                            textColor: "#6366f1",
-                                            trailColor: "#eee",
-                                        })}
-                                    />
-                                </div>
+                                <CircularProgressbar
+                                    value={score}
+                                    text={`${score}%`}
+                                    styles={buildStyles({
+                                        textSize: "16px",
+                                        pathColor: `rgba(99, 102, 241, ${score / 100})`,
+                                        textColor: "#4f46e5",
+                                        trailColor: "#e5e7eb",
+                                    })}
+                                />
                             </div>
                         )}
+
                         {previewURL && (
-                            <div className="pdf-preview modern-box">
-                                <h3>Preview:</h3>
-                                <iframe src={previewURL} title="Resume PDF Preview"></iframe>
+                            <div className="pdf-card">
+                                <h3>Resume Preview</h3>
+                                <iframe src={previewURL} title="Resume PDF Preview" />
                             </div>
                         )}
-
-
                     </div>
                 </div>
             </div>

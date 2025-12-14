@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import './ImageEditor.css';
-import EasyConnect from '../../App_utils/EasyConnect';
+import EasyConnect from '../../App_utils/EasyConnect.tsx';
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
 
@@ -14,6 +14,7 @@ const ImageEditor = () => {
   const [blur, setBlur] = useState(1);
   const [loading, setLoading] = useState(false);
   const [faceBlur, setFaceBlur] = useState(false);
+  const [bgRemove, setBgRemove] = useState(false);
 
 
   const handleFileChange = (e) => {
@@ -43,6 +44,7 @@ const ImageEditor = () => {
     formData.append('width', width);
     formData.append('blur', blur);
     formData.append('faceBlur', faceBlur);
+    formData.append('bgRemove', faceBlur);
 
     try {
       const response = await fetch(`${BACKEND_URL}/projects/image_editor/upload`, {
@@ -111,6 +113,15 @@ const ImageEditor = () => {
                 type="checkbox"
                 checked={faceBlur}
                 onChange={() => setFaceBlur(!faceBlur)}
+              />
+              <span className="slider"></span>
+            </label>
+            <label>Remove Backgroud</label>
+            <label className="toggle-switch">
+              <input
+                type="checkbox"
+                checked={bgRemove}
+                onChange={() => setBgRemove(!bgRemove)}
               />
               <span className="slider"></span>
             </label>

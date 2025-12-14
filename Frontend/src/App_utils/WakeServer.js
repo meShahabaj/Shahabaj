@@ -9,7 +9,7 @@ export const WakeServer = () => {
       try {
         await axios.get(BACKEND_URL + "/test");
       } catch (err) {
-        console.log("Sever err:", err);
+        console.log("Unable to connect backend.");
       }
     };
     wake();

@@ -22,7 +22,8 @@ async def upload_image(
     width: float = Form(...),
     height: float = Form(...),
     blur: float = Form(...),
-    faceBlur: str = Form(...)
+    faceBlur: str = Form(...),
+    bgRemove: str = Form(...)
 ):
     # Convert fields to correct types
     width = int(round(width))
