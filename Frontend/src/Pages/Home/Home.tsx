@@ -2,11 +2,11 @@ import { lazy, Suspense, JSX, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion"
 import EasyConnect from "../../App_utils/EasyConnect.tsx";
+import Header from "./Header.tsx";
+import Banner from "./Banner.tsx"
+import About from "./About.tsx"
 
 // Lazy-load sections
-const Header = lazy(() => import("./Header.tsx"));
-const Banner = lazy(() => import("./Banner.tsx"));
-const About = lazy(() => import("./About.tsx"));
 const ProjectsSection = lazy(() => import("./ProjectSection.tsx"));
 const CertificatesSection = lazy(() => import("./CertificateSection.tsx"));
 const VideosSection = lazy(() => import("./VideoSection.tsx"));
