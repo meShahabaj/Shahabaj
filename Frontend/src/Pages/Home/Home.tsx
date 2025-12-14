@@ -10,7 +10,7 @@ const About = lazy(() => import("./About.tsx"));
 const ProjectsSection = lazy(() => import("./ProjectSection.tsx"));
 const CertificatesSection = lazy(() => import("./CertificateSection.tsx"));
 const VideosSection = lazy(() => import("./VideoSection.tsx"));
-const Skills = lazy(() => import("./Skills.tsx"));
+const Skills = lazy(() => import("./Skills_temp.tsx"));
 const Chatbot = lazy(() => import("../ChatBot/Chatbot"));
 const SectionLoader = () => (
   <div className="py-24 flex justify-center">
