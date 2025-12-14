@@ -30,10 +30,10 @@ Shahabaj/
 ### **Frontend**
 
 * React.js
-* JavaScript 
-* CSS
+* TypeScript 
+* TailwindCSS
 * Axios
-* React Router
+* Hash Router
 
 ### **Backend**
 

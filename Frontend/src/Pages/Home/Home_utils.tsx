@@ -7,9 +7,7 @@ import {
   FcDownload,
   FcComboChart,
 } from "react-icons/fc";
-import { FaGithub, FaLinkedin, FaYoutube } from "react-icons/fa";
-import { SiKaggle, SiGmail } from "react-icons/si";
-import { RiWhatsappFill } from "react-icons/ri";
+
 
 /* =======================
    TYPES
@@ -26,10 +24,7 @@ export interface Project {
   address: string;
 }
 
-export interface Contact {
-  title: ReactNode;
-  link: string;
-}
+
 
 export interface Skill {
   id: number;
@@ -62,7 +57,7 @@ export const headerButtons: HeaderButton[] = [
 ======================= */
 
 export const about: string =
-  "A data enthusiast who loves transforming ideas into impactful data-driven projects. I enjoy working with tools like PyTorch, Python, Pandas, NumPy, Scikit-learn, and Power BI to uncover insights and build intelligent solutions. I’m always exploring new techniques in data analysis, visualization, and machine learning. Currently, I’m pursuing my Master of Computer Applications (MCA) from Lovely Professional University, which is helping me deepen my understanding of software development, algorithms, and real-world problem-solving. When I’m not coding, I’m experimenting with new libraries or learning about the latest in AI — always aiming to turn data into meaningful impact.";
+  "Hi, Shahabj Khan this side, a data enthusiast who loves transforming ideas into impactful data-driven projects. I enjoy working with tools like PyTorch, Python, Pandas, NumPy, Scikit-learn, and Power BI to uncover insights and build intelligent solutions. I’m always exploring new techniques in data analysis, visualization, and machine learning. Currently, I’m pursuing my Master of Computer Applications (MCA) from Lovely Professional University, which is helping me deepen my understanding of software development, algorithms, and real-world problem-solving. When I’m not coding, I’m experimenting with new libraries or learning about the latest in AI — always aiming to turn data into meaningful impact.";
 
 /* =======================
    COURSES
@@ -81,6 +76,11 @@ export const courses: string[] = [
 
 export const projects: Project[] = [
   {
+    title: "Techis Talk: ",
+    pic: "Techis_talk.png",
+    address: "https://techistalk.onrender.com/",
+  },
+  {
     title: "Image Editor",
     pic: "face-blurrring-featured-image.avif",
     address: "/projects/image_editor",
@@ -91,9 +91,13 @@ export const projects: Project[] = [
     address: "/projects/face_extractor",
   },
   {
-    title: "AI (RAG) Chat Bot about me",
+    title: "AI (RAG) Chat Bot: About Me",
     pic: "pexels-thirdman-5592313.jpg",
     address: "/projects/assistant",
+  }, {
+    title: "Resume Scorer",
+    pic: "resume_scorer.png",
+    address: "/projects/resume_scorer",
   },
   {
     title: "Stone Paper Scissor Game with Live Gesture",
@@ -106,46 +110,16 @@ export const projects: Project[] = [
     address: "/projects/salary_predictor",
   },
   {
-    title: "Number Identifier",
-    pic: "Mnist.png",
-    address: "/projects/number_identifier",
+    title: "Anixo: IT Solutions",
+    pic: "anixo.png",
+    address: "https://anixo.onrender.com/",
   },
-  {
-    title: "Resume Scorer",
-    pic: "Mnist.png",
-    address: "/projects/resume_scorer",
-  },
-];
+  // {
+  //   title: "Number Identifier",
+  //   pic: "Mnist.png",
+  //   address: "/projects/number_identifier",
+  // },
 
-/* =======================
-   CONTACTS
-======================= */
-
-export const contacts: Contact[] = [
-  {
-    title: <SiGmail style={{ color: "red", cursor: "pointer" }} />,
-    link: "https://mail.google.com/mail/?view=cm&fs=1&to=shahabaj773@gmail.com",
-  },
-  {
-    title: <FaGithub style={{ color: "black", cursor: "pointer" }} />,
-    link: "https://github.com/meShahabaj",
-  },
-  {
-    title: <SiKaggle className="icon" />,
-    link: "https://kaggle.com/shahabaj11",
-  },
-  {
-    title: <RiWhatsappFill style={{ color: "green" }} />,
-    link: "https://wa.me/919336934551",
-  },
-  {
-    title: <FaLinkedin style={{ color: "blue" }} />,
-    link: "https://linkedin.com/in/shahabaj-khan/",
-  },
-  {
-    title: <FaYoutube style={{ color: "red" }} />,
-    link: "https://www.youtube.com/channel/UCiNSEa7oKPMpgaqVWgs353A/",
-  },
 ];
 
 /* =======================
@@ -153,29 +127,155 @@ export const contacts: Contact[] = [
 ======================= */
 
 export const defaultSkills: Skill[] = [
-  { id: 1, name: "Python", category: "Programming Languages", icon: "https://cdn.worldvectorlogo.com/logos/python-5.svg" },
-  { id: 2, name: "JavaScript", category: "Programming Languages", icon: "https://cdn.worldvectorlogo.com/logos/javascript-1.svg" },
-  { id: 3, name: "C++", category: "Programming Languages", icon: "https://cdn.worldvectorlogo.com/logos/c.svg" },
+  // ======================
+  // PROGRAMMING LANGUAGES
+  // ======================
+  {
+    id: 1,
+    name: "Python",
+    category: "Programming Languages",
+    icon: "https://cdn.worldvectorlogo.com/logos/python-5.svg",
+  },
+  {
+    id: 2,
+    name: "JavaScript",
+    category: "Programming Languages",
+    icon: "https://cdn.worldvectorlogo.com/logos/javascript-1.svg",
+  },
+  {
+    id: 3,
+    name: "C++",
+    category: "Programming Languages",
+    icon: "https://cdn.worldvectorlogo.com/logos/c-plusplus.svg",
+  },
+  {
+    id: 4,
+    name: "HTML",
+    category: "Programming Languages",
+    icon: "https://cdn.worldvectorlogo.com/logos/html-1.svg",
+  },
+  {
+    id: 5,
+    name: "CSS",
+    category: "Programming Languages",
+    icon: "https://cdn.worldvectorlogo.com/logos/css-3.svg",
+  },
 
-  { id: 4, name: "React JS", category: "Web Dev", icon: "https://cdn.worldvectorlogo.com/logos/react-2.svg" },
-  { id: 5, name: "Node JS", category: "Web Dev", icon: "https://cdn.worldvectorlogo.com/logos/nodejs-icon.svg" },
-  { id: 6, name: "Django", category: "Web Dev", icon: "https://cdn.worldvectorlogo.com/logos/django.svg" },
+  // =========
+  // WEB DEV
+  // =========
+  {
+    id: 6,
+    name: "React",
+    category: "Web Dev",
+    icon: "https://cdn.worldvectorlogo.com/logos/react-2.svg",
+  },
+  {
+    id: 7,
+    name: "Node.js",
+    category: "Web Dev",
+    icon: "https://cdn.worldvectorlogo.com/logos/nodejs-icon.svg",
+  },
+  {
+    id: 8,
+    name: "FastAPI",
+    category: "Web Dev",
+    icon: "https://cdn.worldvectorlogo.com/logos/fastapi.svg",
+  },
+  {
+    id: 9,
+    name: "Flask",
+    category: "Web Dev",
+    icon: "https://cdn.worldvectorlogo.com/logos/flask.svg",
+  },
 
-  { id: 7, name: "MongoDB", category: "Database", icon: "https://cdn.worldvectorlogo.com/logos/mongodb-icon-1.svg" },
-  { id: 8, name: "MySQL", category: "Database", icon: "https://cdn.worldvectorlogo.com/logos/mysql-6.svg" },
+  // =========
+  // DATABASE
+  // =========
+  {
+    id: 10,
+    name: "MongoDB",
+    category: "Database",
+    icon: "https://cdn.worldvectorlogo.com/logos/mongodb-icon-1.svg",
+  },
+  {
+    id: 11,
+    name: "MySQL",
+    category: "Database",
+    icon: "https://cdn.worldvectorlogo.com/logos/mysql-6.svg",
+  },
 
-  { id: 9, name: "Pandas", category: "ML & DL", icon: "https://cdn.worldvectorlogo.com/logos/pandas.svg" },
-  { id: 10, name: "NumPy", category: "ML & DL", icon: "https://cdn.worldvectorlogo.com/logos/numpy-1.svg" },
-  { id: 11, name: "Matplotlib", category: "ML & DL", icon: "https://upload.wikimedia.org/wikipedia/commons/8/84/Matplotlib_icon.svg" },
-  { id: 12, name: "Seaborn", category: "ML & DL", icon: "https://cdn.worldvectorlogo.com/logos/seaborn-1.svg" },
-  { id: 13, name: "Scikit-learn", category: "ML & DL", icon: "https://cdn.worldvectorlogo.com/logos/scikit-learn.svg" },
-  { id: 14, name: "PyTorch", category: "ML & DL", icon: "https://logo.svgcdn.com/devicon/pytorch-original.svg" },
-  { id: 15, name: "Ultralytics (YOLO)", category: "ML & DL", icon: "https://raw.githubusercontent.com/ultralytics/assets/main/logo/Ultralytics_YOLO_Logomark.png" },
-  { id: 16, name: "OpenCV", category: "ML & DL", icon: "https://cdn.worldvectorlogo.com/logos/opencv.svg" },
-  { id: 17, name: "MediaPipe", category: "ML & DL", icon: "https://logo.svgcdn.com/simple-icons/mediapipe-dark.svg" },
-  { id: 20, name: "CNN", category: "ML & DL", icon: "https://cdn-icons-png.flaticon.com/512/2103/2103658.png" },
-  { id: 21, name: "LangChain", category: "ML & DL", icon: "https://avatars.githubusercontent.com/u/126733545?s=200&v=4" },
+  // =========
+  // ML & DL
+  // =========
+  {
+    id: 12,
+    name: "Pandas",
+    category: "ML & DL",
+    icon: "https://cdn.worldvectorlogo.com/logos/pandas.svg",
+  },
+  {
+    id: 13,
+    name: "NumPy",
+    category: "ML & DL",
+    icon: "https://cdn.worldvectorlogo.com/logos/numpy-1.svg",
+  },
+  {
+    id: 14,
+    name: "Matplotlib",
+    category: "ML & DL",
+    icon: "https://upload.wikimedia.org/wikipedia/commons/8/84/Matplotlib_icon.svg",
+  },
+  {
+    id: 15,
+    name: "Seaborn",
+    category: "ML & DL",
+    icon: "https://cdn.worldvectorlogo.com/logos/seaborn-1.svg",
+  },
+  {
+    id: 16,
+    name: "Scikit-learn",
+    category: "ML & DL",
+    icon: "https://cdn.worldvectorlogo.com/logos/scikit-learn.svg",
+  },
+  {
+    id: 17,
+    name: "PyTorch",
+    category: "ML & DL",
+    icon: "https://logo.svgcdn.com/devicon/pytorch-original.svg",
+  },
+  {
+    id: 18,
+    name: "Ultralytics YOLO",
+    category: "ML & DL",
+    icon: "https://raw.githubusercontent.com/ultralytics/assets/main/logo/Ultralytics_YOLO_Logomark.png",
+  },
+  {
+    id: 19,
+    name: "OpenCV",
+    category: "ML & DL",
+    icon: "https://cdn.worldvectorlogo.com/logos/opencv.svg",
+  },
+  {
+    id: 20,
+    name: "MediaPipe",
+    category: "ML & DL",
+    icon: "https://logo.svgcdn.com/simple-icons/mediapipe-dark.svg",
+  },
+  {
+    id: 21,
+    name: "CNN",
+    category: "ML & DL",
+    icon: "https://cdn-icons-png.flaticon.com/512/2103/2103658.png",
+  },
+  {
+    id: 22,
+    name: "LangChain",
+    category: "ML & DL",
+    icon: "https://avatars.githubusercontent.com/u/126733545?s=200&v=4",
+  },
 ];
+
 
 export const categories: string[] = [
   "ML & DL",

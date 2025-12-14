@@ -22,22 +22,22 @@ interface SkillsProps {
 ===================== */
 
 const container = {
-  hidden: { opacity: 0, y: 8 },
+  hidden: { opacity: 0 },
   show: {
     opacity: 1,
-    y: 0,
     transition: { staggerChildren: 0.06 },
   },
 };
 
 const item = {
-  hidden: { opacity: 0, y: 8 },
+  hidden: { opacity: 0, y: 10, scale: 0.9 },
   show: {
     opacity: 1,
     y: 0,
+    scale: 1,
     transition: { type: "spring", stiffness: 300, damping: 24 },
   },
-  exit: { opacity: 0, y: 8 },
+  exit: { opacity: 0, y: 10, scale: 0.9 },
 };
 
 /* =====================
@@ -55,28 +55,34 @@ export default function Skills({ skills = defaultSkills }: SkillsProps) {
     [skills, activeCategory]
   );
 
+
   return (
-    <section className="bg-black py-16 px-6">
+
+    <section className="relative bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 overflow-hidden py-20 px-6">
+
+
       {/* Header */}
-      <div className="text-center mb-10">
-        <h2 className="text-3xl md:text-4xl font-bold text-white mb-2">
+      <motion.div
+        className="relative z-10 text-center mb-12"
+      >
+        <h2 className="text-4xl md:text-5xl font-bold text-cyan-400 mb-2 drop-shadow-lg">
           Skills
         </h2>
-        <p className="text-slate-400">
+        <p className="text-slate-300 text-lg">
           Technologies I use to build modern, production-ready apps
         </p>
-      </div>
+      </motion.div>
 
       {/* Filter Buttons */}
-      <div className="flex flex-wrap justify-center gap-3 mb-12">
+      <div className="relative z-10 flex flex-wrap justify-center gap-3 mb-12">
         {categories.map((c) => (
           <button
             key={c}
             onClick={() => setActiveCategory(c)}
             className={`px-4 py-2 rounded-full text-sm font-medium transition
               ${activeCategory === c
-                ? "bg-sky-600 text-white"
-                : "bg-slate-200 text-slate-800 hover:bg-slate-300"
+                ? "bg-cyan-500 text-white shadow-lg"
+                : "bg-slate-700 text-slate-300 hover:bg-cyan-600 hover:text-white"
               }`}
           >
             {c}
@@ -86,10 +92,10 @@ export default function Skills({ skills = defaultSkills }: SkillsProps) {
 
       {/* Skills Grid */}
       <motion.div
+        className="relative z-10 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-6 justify-items-center"
         variants={container}
         initial="hidden"
         animate="show"
-        className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-6 justify-items-center"
       >
         <AnimatePresence>
           {filtered.map((skill) => (
@@ -97,8 +103,7 @@ export default function Skills({ skills = defaultSkills }: SkillsProps) {
               key={skill.id}
               variants={item}
               exit="exit"
-              className="flex flex-col items-center gap-2 p-3
-                         transition-transform hover:scale-110"
+              className="flex flex-col items-center gap-2 p-4 bg-white/10 backdrop-blur-md rounded-xl shadow-md hover:scale-110 transition-transform duration-300"
             >
               <img
                 src={skill.icon}
@@ -109,8 +114,7 @@ export default function Skills({ skills = defaultSkills }: SkillsProps) {
                 }}
                 className="w-14 h-14 object-contain"
               />
-
-              <span className="text-sm text-center font-medium text-slate-200">
+              <span className="text-sm text-center font-medium text-white">
                 {skill.name}
               </span>
             </motion.div>

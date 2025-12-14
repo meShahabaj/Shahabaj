@@ -7,10 +7,11 @@ interface NavLink {
 }
 
 interface HeaderProps {
-    scrollToSection: (ref: React.RefObject<HTMLElement>) => void;
-    refs: { [key: string]: React.RefObject<HTMLElement> };
+    scrollToSection: (ref: React.RefObject<HTMLElement | null>) => void;
+    refs: { [key: string]: React.RefObject<HTMLElement | null> };
     downloadCV: () => void;
 }
+
 
 const Header: FC<HeaderProps> = ({ scrollToSection, refs, downloadCV }) => {
     const [isOpen, setIsOpen] = React.useState(false);
@@ -24,11 +25,11 @@ const Header: FC<HeaderProps> = ({ scrollToSection, refs, downloadCV }) => {
     ];
 
     return (
-        <header className="w-full fixed top-0 left-0 z-50 bg-white/90 backdrop-blur-md shadow-md transition-all">
+        <header className="w-full fixed top-0 left-0 z-50 bg-white/100 backdrop-blur-md shadow-md transition-all">
             <div className="max-w-7xl mx-auto flex justify-between items-center px-6 py-4">
                 {/* Logo */}
                 <button onClick={() => scrollToSection(refs["Home"])} className="text-3xl font-bold text-blue-600 cursor-pointer hover:scale-105 transition-transform">
-                    Shahabaj
+                    Shahabaj Khan
                 </button>
 
                 {/* Desktop Menu */}
