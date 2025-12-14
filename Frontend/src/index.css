@@ -19,3 +19,8 @@
   color: #334155;
   opacity: 0.8;
 }
+
+html,
+body {
+  overflow-x: hidden;
+}

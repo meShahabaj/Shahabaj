@@ -25,7 +25,9 @@ const Header: FC<HeaderProps> = ({ scrollToSection, refs, downloadCV }) => {
     ];
 
     return (
-        <header className="w-full fixed top-0 left-0 z-50 bg-white/100 backdrop-blur-md shadow-md transition-all">
+        // <header className="w-full fixed top-0 left-0 z-50 bg-white/100 backdrop-blur-md shadow-md transition-all">
+        <header className="fixed top-0 left-0 w-full overflow-x-hidden z-50 bg-white/100 backdrop-blur-md shadow-md">
+
             <div className="max-w-7xl mx-auto flex justify-between items-center px-6 py-4">
                 {/* Logo */}
                 <button onClick={() => scrollToSection(refs["Home"])} className="text-3xl font-bold text-blue-600 cursor-pointer hover:scale-105 transition-transform">
@@ -84,11 +86,12 @@ const Header: FC<HeaderProps> = ({ scrollToSection, refs, downloadCV }) => {
 
             {/* Mobile Menu */}
             <div
-                className={`md:hidden bg-white/95 backdrop-blur-md shadow-md px-6 py-4 flex flex-col gap-3 transform transition-transform ${isOpen
-                    ? "translate-y-0 opacity-100"
-                    : "-translate-y-10 opacity-0 pointer-events-none"
-                    }`}
+                className={`md:hidden bg-white/95 backdrop-blur-md shadow-md 
+                    px-6 py-4 flex flex-col gap-3 transition-all
+    ${isOpen ? "block opacity-100" : "hidden"}
+  `}
             >
+
                 {navLinks.map((link, idx) => (
                     <button
                         key={idx}
