@@ -1,10 +1,8 @@
 import { Link } from "react-router-dom";
 import { projects } from "../Home_utils.tsx";
-import { motion } from "framer-motion";
 
 interface Props {
     refProp: React.RefObject<HTMLElement | null>;
-    onSeeAll: () => void;
 }
 
 export default function ProjectsSection({ refProp }: Props) {
@@ -24,12 +22,7 @@ export default function ProjectsSection({ refProp }: Props) {
             {/* Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 max-w-[1400px] mx-auto">
                 {projects.map((p) => (
-                    <motion.div
-                        key={p.address}
-                        initial={{ opacity: 0, y: 24 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6, ease: "easeOut" }}
-                        viewport={{ once: true }}
+                    <div
                     >
                         <Link
                             to={p.address}
@@ -82,7 +75,7 @@ export default function ProjectsSection({ refProp }: Props) {
                                 </p>
                             </div>
                         </Link>
-                    </motion.div>
+                    </div>
                 ))}
             </div>
         </section >

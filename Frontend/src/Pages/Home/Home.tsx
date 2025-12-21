@@ -1,5 +1,4 @@
 import { lazy, Suspense, JSX, useRef } from "react";
-import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion"
 import EasyConnect from "../../App_utils/EasyConnect.tsx";
 import Header from "./Components/Header.tsx";
@@ -19,7 +18,6 @@ const SectionLoader = () => (
 );
 
 export default function Home(): JSX.Element {
-  const navigate = useNavigate();
 
   // Section refs
   const homeRef = useRef<HTMLElement | null>(null);
@@ -89,15 +87,13 @@ export default function Home(): JSX.Element {
         <Suspense fallback={<SectionLoader />}>
           <ProjectsSection
             refProp={projectsRef}
-            onSeeAll={() => navigate("/projects")}
           />
         </Suspense>
       </SectionMotion>
 
       <SectionMotion>
-        <Suspense fallback={<SectionLoader />}>
-          <CertificatesSection refProp={certificateRef} />
-        </Suspense>
+        <CertificatesSection refProp={certificateRef} />
+
       </SectionMotion>
 
       <SectionMotion>
