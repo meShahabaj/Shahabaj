@@ -18,7 +18,7 @@ interface Contact {
 // ROUTES IMPORT
 export const App_utils: App_utils_items[] = [
   { path: "/", element: lazy(() => import("../Pages/Home/Home.tsx")) },
-  { path: "/projects/salary_predictor", element: lazy(() => import("../Pages/SalaryPredictor/SalaryPredictor.js")) },
+  { path: "/projects/salary_predictor", element: lazy(() => import("../Pages/SalaryPredictor/SalaryPredictor.tsx")) },
   { path: "/projects/image_editor", element: lazy(() => import("../Pages/ImageEditor/ImageEditor.tsx")) },
   { path: "/projects/number_identifier", element: lazy(() => import("../Pages/NumberIdentifier/NumberIdentifier.js")) },
   { path: "/projects/stone_paper_scissor", element: lazy(() => import("../Pages/StonePaperScissor/StonePaperScissor.js")) },
