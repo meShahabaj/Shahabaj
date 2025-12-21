@@ -1,4 +1,4 @@
-import { about } from "./Home_utils.tsx";
+import { about } from "../Home_utils.tsx";
 
 interface Props {
     refProp: React.RefObject<HTMLElement | null>;

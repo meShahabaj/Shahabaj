@@ -24,3 +24,30 @@ html,
 body {
   overflow-x: hidden;
 }
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animated-gradient {
+  background: linear-gradient(120deg,
+      #4f46e5,
+      /* indigo */
+      #4338ca,
+      /* darker indigo */
+      #020617
+      /* deep slate */
+    );
+  background-size: 200% 200%;
+  animation: gradientShift 12s ease infinite;
+}

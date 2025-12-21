@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { projects } from "./Home_utils.tsx";
+import { projects } from "../Home_utils.tsx";
 import { motion } from "framer-motion";
 
 interface Props {

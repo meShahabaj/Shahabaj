@@ -2,16 +2,16 @@ import { lazy, Suspense, JSX, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion"
 import EasyConnect from "../../App_utils/EasyConnect.tsx";
-import Header from "./Header.tsx";
-import Banner from "./Banner.tsx"
-import About from "./About.tsx"
+import Header from "./Components/Header.tsx";
+import Banner from "./Components/Banner.tsx"
+import About from "./Components/About.tsx"
 
 // Lazy-load sections
-const ProjectsSection = lazy(() => import("./ProjectSection.tsx"));
-const CertificatesSection = lazy(() => import("./CertificateSection.tsx"));
-const VideosSection = lazy(() => import("./VideoSection.tsx"));
-const Skills = lazy(() => import("./Skills_temp.tsx"));
-const Chatbot = lazy(() => import("../ChatBot/Chatbot"));
+const ProjectsSection = lazy(() => import("./Components/ProjectSection.tsx"));
+const CertificatesSection = lazy(() => import("./Components/CertificateSection.tsx"));
+const VideosSection = lazy(() => import("./Components/VideoSection.tsx"));
+const Skills = lazy(() => import("./Components/Skills_temp.tsx"));
+const Chatbot = lazy(() => import("./Components/Chatbot.tsx"));
 const SectionLoader = () => (
   <div className="py-24 flex justify-center">
     <div className="w-8 h-8 border-2 border-sky-500 border-t-transparent rounded-full animate-spin" />

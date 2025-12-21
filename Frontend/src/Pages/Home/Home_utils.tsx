@@ -82,7 +82,7 @@ export const projects: Project[] = [
   },
   {
     title: "Image Editor",
-    pic: "face-blurrring-featured-image.avif",
+    pic: "Image_editor.jpg",
     address: "/projects/image_editor",
   },
   {

@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { defaultSkills, categories } from "./Home_utils.tsx";
+import { defaultSkills, categories } from "../Home_utils.tsx";
 
 /* =====================
    TYPES

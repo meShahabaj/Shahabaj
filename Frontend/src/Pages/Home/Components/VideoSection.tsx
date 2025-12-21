@@ -4,8 +4,8 @@ import Slider, { type Settings } from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-import { videos } from "./Home_utils.tsx";
-import type { Video } from "./Home_utils";
+import { videos } from "../Home_utils.tsx";
+import type { Video } from "../Home_utils.tsx";
 
 export default function VideoSlider(): JSX.Element {
     const settings: Settings = {
