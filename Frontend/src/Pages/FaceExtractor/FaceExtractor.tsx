@@ -1,6 +1,7 @@
 import { useState, ChangeEvent } from 'react';
 import JSZip from "jszip";
 import EasyConnect from '../../App_utils/EasyConnect.tsx';
+import Header from '../Header/Header.tsx';
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
 const FaceExtractor = () => {
@@ -61,6 +62,7 @@ const FaceExtractor = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-700 text-gray-100 font-sans flex flex-col items-center p-6">
+      <Header />
 
       <EasyConnect />
 

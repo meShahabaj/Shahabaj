@@ -1,7 +1,7 @@
 import { useState, FormEvent } from "react";
 import axios from "axios";
-import EasyConnect from "../../App_utils/EasyConnect";
 import jobs from "./SalaryPredictorUtils";
+import Header from "../Header/Header.tsx";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL as string;
 
@@ -31,7 +31,7 @@ const SalaryPredictor: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-100 via-slate-200 to-slate-300 text-slate-900">
-
+      <Header />
 
       {/* PAGE HEADER */}
       <header className="mx-auto max-w-4xl px-6 pt-14 pb-10 text-center">

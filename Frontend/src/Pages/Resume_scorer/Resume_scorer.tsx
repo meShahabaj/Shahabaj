@@ -4,6 +4,7 @@ import Select from "react-select";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { JOBS } from "./Resume_scorer_utils";
+import Header from "../Header/Header.tsx";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL as string;
 
@@ -63,6 +64,7 @@ const ResumeScorer: React.FC = () => {
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-slate-100 via-slate-200 to-slate-300 dark:from-slate-950 dark:via-slate-900 dark:to-slate-800 text-slate-900 dark:text-slate-100">
+            <Header />
             <main className="mx-auto max-w-4xl px-6 py-16">
                 {/* HEADER */}
                 <header className="text-center mb-14">
