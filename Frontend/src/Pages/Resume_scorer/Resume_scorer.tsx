@@ -57,7 +57,8 @@ const ResumeScorer: React.FC = () => {
             console.log(response)
 
             setIssues(response.data["Issues"]);
-            setScore(Math.round(response.data["Similarity score"]));
+            // setScore(Math.round(response.data["Similarity score"]));
+            setScore(Math.round(response.data));
         } catch {
             setError("Failed to analyze resume. Please try again.");
         } finally {
