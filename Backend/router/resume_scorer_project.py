@@ -103,6 +103,7 @@ async def resume_scorer(
         text_pages.append(extracted)
 
     text = "\n".join(text_pages)
+    print(text)
 
     ensure_loaded()
 
