@@ -54,6 +54,8 @@ const ResumeScorer: React.FC = () => {
                 { headers: { "Content-Type": "multipart/form-data" } }
             );
 
+            console.log(response)
+
             setIssues(response.data["Issues"]);
             setScore(Math.round(response.data["Similarity score"]));
         } catch {
