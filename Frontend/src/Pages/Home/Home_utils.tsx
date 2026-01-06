@@ -114,11 +114,11 @@ export const projects: Project[] = [
     pic: "anixo.png",
     address: "https://anixo.onrender.com/",
   },
-  // {
-  //   title: "Number Identifier",
-  //   pic: "Mnist.png",
-  //   address: "/projects/number_identifier",
-  // },
+  {
+    title: "Goal Achiever",
+    pic: "goal-achiever.png",
+    address: "/projects/goal_achiever",
+  },
 
 ];
 

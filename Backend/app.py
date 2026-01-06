@@ -4,13 +4,15 @@ from fastapi.middleware.cors import CORSMiddleware
 from router import (
     test_router,
     image_editor_router,
-    salary_predictor_router,
+    salary_predictor_router, 
     chatbot_router,
     face_extractor_router,
     rps_router,
-    number_identifier_router,resume_scorer_router
+    number_identifier_router,resume_scorer_router,
+    goal_achiever_router, auth
 )
 import os
+from DB.mongodb import connect_to_mongo, close_mongo_connection
 
 app = FastAPI()
 
@@ -24,6 +26,15 @@ app.add_middleware(
 )
 
 #------------- STARTING ROUTE ---------------
+
+@app.on_event("startup")
+async def startup_db():
+    await connect_to_mongo()
+
+@app.on_event("shutdown")
+async def shutdown_db():
+    await close_mongo_connection()
+    
 @app.api_route("/", methods=["GET", "HEAD"])
 def root():
     return {"status": "ok"}
@@ -37,6 +48,8 @@ app.include_router(chatbot_router)
 app.include_router(number_identifier_router)
 app.include_router(rps_router)
 app.include_router(resume_scorer_router)
+app.include_router(goal_achiever_router)
+app.include_router(auth)
 
 if __name__ == "__main__":  
     port = int(os.getenv("PORT", 8000))

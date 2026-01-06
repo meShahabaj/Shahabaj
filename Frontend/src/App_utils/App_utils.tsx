@@ -27,6 +27,9 @@ export const App_utils: App_utils_items[] = [
     path: "/projects/assistant", element: lazy(() => import("../Pages/Assistant/Assistant.tsx"))
   },
   { path: "/projects/resume_scorer", element: lazy(() => import("../Pages/Resume_scorer/Resume_scorer.tsx")) },
+  { path: "/projects/goal_achiever", element: lazy(() => import("../Pages/GoalAchiever/GoalAchiever.tsx")) },
+  { path: "/projects/goal_achiever/signup", element: lazy(() => import("../Pages/GoalAchiever/Auth/Signup.tsx")) },
+  { path: "/projects/goal_achiever/login", element: lazy(() => import("../Pages/GoalAchiever/Auth/Login.tsx")) }
 ];
 
 export const contacts: Contact[] = [

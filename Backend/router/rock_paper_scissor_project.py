@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Request
 import random
 
+
 router = APIRouter()
 
 @router.post("/projects/rock_paper_scissor/detect")
