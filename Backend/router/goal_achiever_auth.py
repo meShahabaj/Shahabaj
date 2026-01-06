@@ -286,7 +286,6 @@ async def get_logged_in_user(current_user: dict = Depends(get_current_user)):
 
 from fastapi import HTTPException
 from datetime import datetime, timedelta
-import resend  # Resend SDK
 
 resend.api_key = "re_xxxxxxxxx"  # Or use environment variable
 
