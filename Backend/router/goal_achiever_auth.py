@@ -6,6 +6,7 @@ from jose import jwt, JWTError
 from passlib.context import CryptContext
 from DB import mongodb
 import random
+import os
 import hashlib
 
 router = APIRouter()
