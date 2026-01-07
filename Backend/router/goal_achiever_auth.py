@@ -10,6 +10,7 @@ import os
 import hashlib
 from email.message import EmailMessage
 import aiosmtplib
+import resend
 
 router = APIRouter()
 
@@ -19,11 +20,9 @@ ALGORITHM = os.getenv("ALGORITHM")
 ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES"))
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-SMTP_HOST = os.getenv("SMTP_HOST")
-SMTP_PORT = int(os.getenv("SMTP_PORT"))
-SMTP_USER = os.getenv("SMTP_USER") 
-SMTP_PASS = os.getenv("SMTP_PASSWORD")  
-FROM_EMAIL = f"YourApp <{SMTP_USER}>"
+resend.api_key = os.getenv("RESEND_API_KEY")
+
+FROM_EMAIL = "GoalAchiever<onboarding@resend.dev>"
 
 ENV = os.getenv("ENV", "development")
 IS_PROD = ENV == "production"
@@ -69,24 +68,25 @@ def create_access_token(data: dict):
     return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
 
 async def send_email(to: str, subject: str, html: str):
-    message = EmailMessage()
-    message["From"] = FROM_EMAIL
-    message["To"] = to
-    message["Subject"] = subject
-    message.set_content("This email requires HTML support.")
-    message.add_alternative(html, subtype="html")
+    try:
+        resend.Emails.send({
+            "from": FROM_EMAIL,
+            "to": to,
+            "subject": subject,
+            "html": html,
+        })
+    except Exception as e:
+        print("Email send failed:", e)
+        raise HTTPException(
+            status_code=500,
+            detail="Failed to send email"
+        )
 
-    await aiosmtplib.send(
-        message,
-        hostname=SMTP_HOST,
-        port=SMTP_PORT,
-        start_tls=True,
-        username=SMTP_USER,
-        password=SMTP_PASS,
-    )
 
 async def get_current_user(request: Request):
     token = request.cookies.get("access_token")
+    print("Request Headers:", request)
+    print("Request Cookies:", token)
 
     print("Access Token:", token)
 
@@ -112,9 +112,11 @@ async def get_current_user(request: Request):
 # ------------------ AUTH ROUTES ------------------
 @router.post("/projects/goal_achiever/signup")
 async def signup(user: SignupUser):
+    print("Signup request received for:", user.email)
     db = mongodb.db.users
 
     existing = await db.find_one({"email": user.email})
+    print("Existing user check:", existing)
 
     otp = generate_otp()
     now = datetime.utcnow()
