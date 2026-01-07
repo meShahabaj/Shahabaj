@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, Response
+from fastapi import APIRouter, Depends, HTTPException, Response, Request
 from pydantic import BaseModel, EmailStr
 from datetime import datetime, timedelta
 from typing import Optional
@@ -8,6 +8,8 @@ from DB import mongodb
 import random
 import os
 import hashlib
+from email.message import EmailMessage
+import aiosmtplib
 
 router = APIRouter()
 
@@ -15,43 +17,18 @@ router = APIRouter()
 SECRET_KEY = os.getenv("SECRET_KEY")
 ALGORITHM = os.getenv("ALGORITHM")
 ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES"))
-
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
-from email.message import EmailMessage
-import aiosmtplib
-import os
 
 SMTP_HOST = os.getenv("SMTP_HOST")
 SMTP_PORT = int(os.getenv("SMTP_PORT"))
 SMTP_USER = os.getenv("SMTP_USER") 
 SMTP_PASS = os.getenv("SMTP_PASSWORD")  
-
 FROM_EMAIL = f"YourApp <{SMTP_USER}>"
 
 ENV = os.getenv("ENV", "development")
 IS_PROD = ENV == "production"
-
 secure = IS_PROD
 samesite = "none" if IS_PROD else "lax"
-
-async def send_email(to: str, subject: str, html: str):
-    message = EmailMessage()
-    message["From"] = FROM_EMAIL
-    message["To"] = to
-    message["Subject"] = subject
-    message.set_content("This email requires HTML support.")
-    message.add_alternative(html, subtype="html")
-
-    await aiosmtplib.send(
-        message,
-        hostname=SMTP_HOST,
-        port=SMTP_PORT,
-        start_tls=True,
-        username=SMTP_USER,
-        password=SMTP_PASS,
-    )
-
 
 # ------------------ SCHEMAS ------------------
 class SignupUser(BaseModel):
@@ -82,7 +59,6 @@ def hash_password(password: str) -> str:
 def verify_password(password: str, hashed: str) -> bool:
     return hash_password(password) == hashed
 
-
 def generate_otp() -> str:
     return str(random.randint(100000, 999999))
 
@@ -92,7 +68,22 @@ def create_access_token(data: dict):
     to_encode.update({"exp": expire})
     return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
 
-from fastapi import Request
+async def send_email(to: str, subject: str, html: str):
+    message = EmailMessage()
+    message["From"] = FROM_EMAIL
+    message["To"] = to
+    message["Subject"] = subject
+    message.set_content("This email requires HTML support.")
+    message.add_alternative(html, subtype="html")
+
+    await aiosmtplib.send(
+        message,
+        hostname=SMTP_HOST,
+        port=SMTP_PORT,
+        start_tls=True,
+        username=SMTP_USER,
+        password=SMTP_PASS,
+    )
 
 async def get_current_user(request: Request):
     token = request.cookies.get("access_token")
@@ -118,11 +109,7 @@ async def get_current_user(request: Request):
 
     return user
 
-
 # ------------------ AUTH ROUTES ------------------
-from fastapi import HTTPException
-from datetime import datetime
-
 @router.post("/projects/goal_achiever/signup")
 async def signup(user: SignupUser):
     db = mongodb.db.users
@@ -183,7 +170,6 @@ async def signup(user: SignupUser):
 
     return {"success": True, "message": "OTP sent to email"}
 
-
 @router.post("/projects/goal_achiever/verify-otp")
 async def verify_otp(data: VerifyOTP):
     db = mongodb.db.users
@@ -233,6 +219,7 @@ async def login(user: LoginUser, response: Response):
             "email": existing["email"],
         }
     }
+
 @router.post("/projects/goal_achiever/forgot-password")
 async def forgot_password(data: ForgotPassword):
     db = mongodb.db.users
@@ -273,7 +260,6 @@ async def forgot_password(data: ForgotPassword):
 
     return {"success": True, "message": "Password reset OTP sent"}
 
-
 @router.post("/projects/goal_achiever/reset-password")
 async def reset_password(data: ResetPassword):
     db = mongodb.db.users
@@ -288,9 +274,6 @@ async def reset_password(data: ResetPassword):
 @router.get("/projects/goal_achiever/me")
 async def get_logged_in_user(current_user: dict = Depends(get_current_user)):
     return {"success": True, "user": {"id": str(current_user["_id"]), "username": current_user["username"], "email": current_user["email"], "otpVerified": current_user.get("otpVerified"), "createdAt": current_user.get("createdAt")}}
-
-from fastapi import HTTPException
-from datetime import datetime, timedelta
 
 @router.post("/projects/goal_achiever/resend-otp")
 async def resend_otp(email: str, purpose: str):
