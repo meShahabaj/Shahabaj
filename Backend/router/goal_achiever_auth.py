@@ -208,8 +208,8 @@ async def login(user: LoginUser, response: Response):
         key="access_token",
         value=token,
         httponly=True,     # ❗ prevents JS access
-        secure=secure,      # True in production (HTTPS)
-        samesite=samesite,
+        secure=True,      # True in production (HTTPS)
+        samesite="none",
         max_age=60 * 60 * 60 * 100,   # 1 hour
         path="/"
     )
