@@ -29,6 +29,12 @@ SMTP_PASS = os.getenv("SMTP_PASSWORD")
 
 FROM_EMAIL = f"YourApp <{SMTP_USER}>"
 
+ENV = os.getenv("ENV", "development")
+IS_PROD = ENV == "production"
+
+secure = IS_PROD
+samesite = "none" if IS_PROD else "lax"
+
 async def send_email(to: str, subject: str, html: str):
     message = EmailMessage()
     message["From"] = FROM_EMAIL
@@ -107,7 +113,6 @@ async def get_current_user(request: Request):
         raise HTTPException(status_code=401, detail="Invalid or expired token")
 
     user = await mongodb.db.users.find_one({"email": email})
-    print(user)
     if not user:
         raise HTTPException(status_code=401, detail="User not found")
 
@@ -214,9 +219,9 @@ async def login(user: LoginUser, response: Response):
         key="access_token",
         value=token,
         httponly=True,     # ❗ prevents JS access
-        secure=False,      # True in production (HTTPS)
-        samesite="lax",
-        max_age=60 * 60,   # 1 hour
+        secure=secure,      # True in production (HTTPS)
+        samesite=samesite,
+        max_age=60 * 60 * 60 * 100,   # 1 hour
         path="/"
     )
 
@@ -328,7 +333,7 @@ async def logout(response: Response):
     response.delete_cookie(
         key="access_token",
         path="/",
-        samesite="lax",
+        samesite=samesite,
     )
     return {
         "success": True,
