@@ -201,6 +201,7 @@ async def login(user: LoginUser, response: Response):
         raise HTTPException(status_code=401, detail="Invalid credentials")
 
     token = create_access_token({"sub": existing["email"]})
+    print("Generated Token:", token)
 
     # ✅ SET COOKIE
     response.set_cookie(
