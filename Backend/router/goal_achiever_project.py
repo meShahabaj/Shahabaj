@@ -1,4 +1,3 @@
-
 from pydantic import BaseModel
 from typing import List
 from datetime import datetime
@@ -13,6 +12,7 @@ class MilestoneCreate(BaseModel):
     description: str
     startDate: datetime
     endDate: datetime
+
 
 
 class GoalCreate(BaseModel):
@@ -30,41 +30,41 @@ async def create_goal(
     db = mongodb.db.goals
 
     # ------------------ BASIC VALIDATION ------------------
-    if data.endDate < data.startDate:
-        raise HTTPException(
-            status_code=400,
-            detail="Goal endDate must be after startDate"
-        )
+    # if data.endDate < data.startDate:
+    #     raise HTTPException(
+    #         status_code=400,
+    #         detail="Goal endDate must be after startDate"
+    #     )
 
-    if len(data.milestones) == 0:
-        raise HTTPException(
-            status_code=400,
-            detail="At least one milestone is required"
-        )
+    # if len(data.milestones) == 0:
+    #     raise HTTPException(
+    #         status_code=400,
+    #         detail="At least one milestone is required"
+    #     )
 
     # ------------------ MILESTONE VALIDATION ------------------
     previous_end = data.startDate
 
-    for index, m in enumerate(data.milestones):
-        if m.endDate < m.startDate:
-            raise HTTPException(
-                status_code=400,
-                detail=f"Milestone {index + 1} endDate must be after startDate"
-            )
+    # for index, m in enumerate(data.milestones):
+    #     if m.endDate < m.startDate:
+    #         raise HTTPException(
+    #             status_code=400,
+    #             detail=f"Milestone {index + 1} endDate must be after startDate"
+    #         )
 
-        if m.startDate < previous_end:
-            raise HTTPException(
-                status_code=400,
-                detail=f"Milestone {index + 1} overlaps with previous milestone"
-            )
+    #     if m.startDate < previous_end:
+    #         raise HTTPException(
+    #             status_code=400,
+    #             detail=f"Milestone {index + 1} overlaps with previous milestone"
+    #         )
 
-        if m.endDate > data.endDate:
-            raise HTTPException(
-                status_code=400,
-                detail=f"Milestone {index + 1} exceeds goal endDate"
-            )
+    #     if m.endDate > data.endDate:
+    #         raise HTTPException(
+    #             status_code=400,
+    #             detail=f"Milestone {index + 1} exceeds goal endDate"
+    #         )
 
-        previous_end = m.endDate
+    #     previous_end = m.endDate
 
     # ------------------ DOCUMENT ------------------
     now = datetime.utcnow()
@@ -219,3 +219,124 @@ async def delete_goal(
         "success": True,
         "message": "Goal deleted successfully"
     }
+
+import os
+import json
+import re
+from datetime import date
+from typing import List
+
+from fastapi import APIRouter, HTTPException
+from pydantic import BaseModel
+from langchain_groq import ChatGroq
+
+# ---------------- Config ----------------
+
+GROQ_API = os.getenv("GROQ_API")
+if not GROQ_API:
+    raise RuntimeError("GROQ_API environment variable not set")
+
+TEMPERATURE = 0.4
+
+# ---------------- Schemas ----------------
+
+class AISuggestRequest(BaseModel):
+    title: str
+    description: str
+    startDate: date
+    endDate: date
+
+
+class MilestoneResponse(BaseModel):
+    title: str
+    description: str
+    startDate: date
+    endDate: date
+
+
+class AISuggestResponse(BaseModel):
+    milestones: List[MilestoneResponse]
+
+# ---------------- Route ----------------
+
+@router.post(
+    "/projects/goal_achiever/ai_suggest_milestones",
+    response_model=AISuggestResponse,
+)
+async def ai_suggest_milestones(payload: AISuggestRequest):
+    if payload.endDate <= payload.startDate:
+        raise HTTPException(
+            status_code=400,
+            detail="End date must be after start date",
+        )
+
+    prompt = f"""
+Create milestone steps for the following goal.
+
+Goal Title: {payload.title}
+Description: {payload.description}
+Start Date: {payload.startDate}
+End Date: {payload.endDate}
+
+Rules:
+- Full details in multiple milestones step by step you can search resources on web also
+like syllabus etc needed
+- Chronological order
+- Dates must stay within the goal range
+- Each milestone must have:
+  - title
+  - description
+  - startDate
+  - endDate
+as detail and step as possible.
+
+Return ONLY valid JSON in this format:
+{{
+  "milestones": [
+    {{
+      "title": "",
+      "description": "",
+      "startDate": "YYYY-MM-DD",
+      "endDate": "YYYY-MM-DD"
+    }}
+  ]
+}}
+"""
+
+    llm = ChatGroq(
+        model="openai/gpt-oss-120b",
+        temperature=TEMPERATURE,
+        api_key=GROQ_API,
+    )
+
+    response = llm.invoke(prompt)
+
+    # ---------------- Parse AI Output ----------------
+    try:
+        content = response.content.strip()
+
+        # Remove ```json ``` or ``` wrappers
+        content = re.sub(r"^```json|```$", "", content, flags=re.MULTILINE).strip()
+
+        parsed = json.loads(content)
+        milestones = parsed.get("milestones")
+
+        if not milestones or not isinstance(milestones, list):
+            raise ValueError("Invalid milestone format")
+
+        # Validate milestone date ranges
+        for m in milestones:
+            if (
+                m["startDate"] < str(payload.startDate)
+                or m["endDate"] > str(payload.endDate)
+                or m["endDate"] < m["startDate"]
+            ):
+                raise ValueError("Milestone dates out of range")
+
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to parse AI response: {str(e)}",
+        )
+
+    return {"milestones": milestones}

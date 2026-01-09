@@ -12,17 +12,8 @@ interface Milestone {
     endDate: Date | null;
 }
 
-interface Goal {
-    id: string;
-    title: string;
-    description: string;
-    startDate: string;
-    endDate: string;
-    milestones: Milestone[];
-}
-
 /* ---------- Component ---------- */
-export default function GoalForm() {
+export default function GoalCreate() {
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
 
@@ -30,6 +21,51 @@ export default function GoalForm() {
     const [endDate, setEndDate] = useState<Date | null>(null);
 
     const [milestones, setMilestones] = useState<Milestone[]>([]);
+    const isAISuggestionEnabled =
+        title.trim() !== "" &&
+        description.trim() !== "" &&
+        startDate !== null &&
+        endDate !== null &&
+        endDate >= startDate;
+
+    const getAISuggestions = async () => {
+        if (!isAISuggestionEnabled) return;
+
+        const payload = {
+            title,
+            description,
+            startDate: startDate?.toISOString().split("T")[0],
+            endDate: endDate?.toISOString().split("T")[0],
+        };
+
+
+        const res = await fetch(
+            `${BACKEND_URL}/projects/goal_achiever/ai_suggest_milestones`,
+            {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                credentials: "include",
+                body: JSON.stringify(payload),
+            }
+        );
+
+        if (!res.ok) {
+            throw new Error("Failed to get AI suggestions");
+        }
+
+        const data = await res.json();
+
+        // Expected: data.milestones
+        setMilestones(
+            data.milestones.map((m: any) => ({
+                title: m.title,
+                description: m.description,
+                startDate: new Date(m.startDate),
+                endDate: new Date(m.endDate),
+            }))
+        );
+    };
+
 
     /* ---------- Validation ---------- */
     const isFormValid =
@@ -98,6 +134,7 @@ export default function GoalForm() {
                 endDate: m.endDate,
             })),
         };
+        console.log("Submitting Goal:", BACKEND_URL);
 
         const res = await fetch(
             `${BACKEND_URL}/projects/goal_achiever/create_goal`,
@@ -119,75 +156,88 @@ export default function GoalForm() {
         setStartDate(null);
         setEndDate(null);
         setMilestones([]);
+        window.location.href = "/#/projects/goal_achiever";
     };
 
     /* ---------- UI ---------- */
     return (
         <form onSubmit={handleSubmit} className="space-y-6">
+            {isAISuggestionEnabled && (
+                <button
+                    type="button"
+                    onClick={getAISuggestions}
+                    className="w-full rounded-xl py-2 border border-blue-600 text-blue-600 hover:bg-blue-50 transition"
+                >
+                    ✨ Get AI Suggested Steps
+                </button>
+            )}
+
             {/* Goal Title */}
-            <div>
-                <label className="block text-sm font-medium mb-1">
-                    Goal Title *
-                </label>
-                <input
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                    className="w-full rounded-xl border px-4 py-2"
-                />
-            </div>
-
-            {/* Goal Description */}
-            <div>
-                <label className="block text-sm font-medium mb-1">
-                    Description *
-                </label>
-                <textarea
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                    className="w-full rounded-xl border px-4 py-2 min-h-[80px]"
-                />
-            </div>
-
-            {/* Goal Date Range */}
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-3 gap-4">
                 <div>
                     <label className="block text-sm font-medium mb-1">
-                        Start Date *
+                        Goal Title *
                     </label>
-                    <DatePicker
-                        selected={startDate}
-                        onChange={(date) => {
-                            setStartDate(date);
-                            setMilestones([]);
-                        }}
-                        showYearDropdown
-                        showMonthDropdown
-                        dropdownMode="select"
-                        scrollableYearDropdown
-                        yearDropdownItemNumber={50}
-                        minDate={new Date()}
+                    <input
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
                         className="w-full rounded-xl border px-4 py-2"
                     />
                 </div>
 
+                {/* Goal Description */}
                 <div>
                     <label className="block text-sm font-medium mb-1">
-                        End Date *
+                        Description *
                     </label>
-                    <DatePicker
-                        selected={endDate}
-                        onChange={(date) => {
-                            setEndDate(date);
-                            setMilestones([]);
-                        }}
-                        showYearDropdown
-                        showMonthDropdown
-                        dropdownMode="select"
-                        scrollableYearDropdown
-                        yearDropdownItemNumber={50}
-                        minDate={startDate ?? new Date()}
-                        className="w-full rounded-xl border px-4 py-2"
+                    <textarea
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
+                        className="w-full rounded-xl border px-4 py-2 min-h-[80px]"
                     />
+                </div>
+
+                {/* Goal Date Range */}
+                <div className="grid grid-cols-2 gap-4">
+                    <div>
+                        <label className="block text-sm font-medium mb-1">
+                            Start Date *
+                        </label>
+                        <DatePicker
+                            selected={startDate}
+                            onChange={(date) => {
+                                setStartDate(date);
+                                setMilestones([]);
+                            }}
+                            showYearDropdown
+                            showMonthDropdown
+                            dropdownMode="select"
+                            scrollableYearDropdown
+                            yearDropdownItemNumber={50}
+                            minDate={new Date()}
+                            className="w-full rounded-xl border px-4 py-2"
+                        />
+                    </div>
+
+                    <div>
+                        <label className="block text-sm font-medium mb-1">
+                            End Date *
+                        </label>
+                        <DatePicker
+                            selected={endDate}
+                            onChange={(date) => {
+                                setEndDate(date);
+                                setMilestones([]);
+                            }}
+                            showYearDropdown
+                            showMonthDropdown
+                            dropdownMode="select"
+                            scrollableYearDropdown
+                            yearDropdownItemNumber={50}
+                            minDate={startDate ?? new Date()}
+                            className="w-full rounded-xl border px-4 py-2"
+                        />
+                    </div>
                 </div>
             </div>
 

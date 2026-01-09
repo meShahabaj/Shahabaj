@@ -24,10 +24,10 @@ resend.api_key = os.getenv("RESEND_API_KEY")
 
 FROM_EMAIL = "GoalAchiever<onboarding@resend.dev>"
 
-ENV = os.getenv("ENV", "development")
-IS_PROD = ENV == "production"
-secure = IS_PROD
-samesite = "none" if IS_PROD else "lax"
+# ENV = os.getenv("ENV", "development")
+# IS_PROD = ENV == "production"
+# secure = IS_PROD
+# samesite = "none" if IS_PROD else "lax"
 
 # ------------------ SCHEMAS ------------------
 class SignupUser(BaseModel):
@@ -85,10 +85,6 @@ async def send_email(to: str, subject: str, html: str):
 
 async def get_current_user(request: Request):
     token = request.cookies.get("access_token")
-    print("Request Headers:", request)
-    print("Request Cookies:", token)
-
-    print("Access Token:", token)
 
     if not token:
         raise HTTPException(status_code=401, detail="Not authenticated")
@@ -208,8 +204,8 @@ async def login(user: LoginUser, response: Response):
         key="access_token",
         value=token,
         httponly=True,     # ❗ prevents JS access
-        secure=True,      # True in production (HTTPS)
-        samesite="none",
+        secure=False,      # True in production (HTTPS)
+        samesite="lax",
         max_age=60 * 60 * 60 * 100,   # 1 hour
         path="/"
     )
