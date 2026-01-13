@@ -76,7 +76,7 @@ export default function GoalAchieverMain() {
     if (!user) return null
 
     return (
-        <div className="min-h-screen bg-gray-50">
+        <div className="min-h-screen">
             {/* Header */}
             <header className="bg-white border-b">
                 <div className="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
@@ -189,7 +189,7 @@ export default function GoalAchieverMain() {
 
                 {/* Content */}
                 <main className="flex-1 p-6">
-                    <div className="bg-white rounded-2xl shadow-sm p-6 min-h-[500px]">
+                    <div>
                         {type === 'analytics' && <GoalAchieverAnalytics />}
                         {type === 'create_goal' && <GoalAchieverCreate />}
                         {type === 'view_goals' && <GoalAchieverShow />}

@@ -29,42 +29,9 @@ async def create_goal(
 ):
     db = mongodb.db.goals
 
-    # ------------------ BASIC VALIDATION ------------------
-    # if data.endDate < data.startDate:
-    #     raise HTTPException(
-    #         status_code=400,
-    #         detail="Goal endDate must be after startDate"
-    #     )
-
-    # if len(data.milestones) == 0:
-    #     raise HTTPException(
-    #         status_code=400,
-    #         detail="At least one milestone is required"
-    #     )
-
     # ------------------ MILESTONE VALIDATION ------------------
     previous_end = data.startDate
 
-    # for index, m in enumerate(data.milestones):
-    #     if m.endDate < m.startDate:
-    #         raise HTTPException(
-    #             status_code=400,
-    #             detail=f"Milestone {index + 1} endDate must be after startDate"
-    #         )
-
-    #     if m.startDate < previous_end:
-    #         raise HTTPException(
-    #             status_code=400,
-    #             detail=f"Milestone {index + 1} overlaps with previous milestone"
-    #         )
-
-    #     if m.endDate > data.endDate:
-    #         raise HTTPException(
-    #             status_code=400,
-    #             detail=f"Milestone {index + 1} exceeds goal endDate"
-    #         )
-
-    #     previous_end = m.endDate
 
     # ------------------ DOCUMENT ------------------
     now = datetime.utcnow()
@@ -75,6 +42,8 @@ async def create_goal(
         "description": data.description,
         "startDate": data.startDate,
         "endDate": data.endDate,
+        "hoursPerDay": data.hoursPerDay,
+        "daysOfWeek": data.daysOfWeek,
         "milestones": [
             {
                 "title": m.title,
@@ -118,7 +87,10 @@ async def get_all_goals(
             "title": goal["title"],
             "description": goal["description"],
             "startDate": goal["startDate"].isoformat(),
-            "endDate": goal["endDate"].isoformat(),"status": status,
+            "endDate": goal["endDate"].isoformat(),
+            "hoursPerDay": goal["hoursPerDay"],
+            "daysOfWeek": goal["daysOfWeek"],
+            "status": status,
             "milestones": [
                 {
                     "title": m["title"],
@@ -245,6 +217,8 @@ class AISuggestRequest(BaseModel):
     description: str
     startDate: date
     endDate: date
+    hoursPerDay: int
+    daysOfWeek: List[str]
 
 
 class MilestoneResponse(BaseModel):
@@ -269,7 +243,7 @@ async def ai_suggest_milestones(payload: AISuggestRequest):
             status_code=400,
             detail="End date must be after start date",
         )
-
+    print(', '.join(payload.daysOfWeek))
     prompt = f"""
 Create milestone steps for the following goal.
 
@@ -277,6 +251,8 @@ Goal Title: {payload.title}
 Description: {payload.description}
 Start Date: {payload.startDate}
 End Date: {payload.endDate}
+Hours Per Day: {payload.hoursPerDay}
+Days of Week: {', '.join(payload.daysOfWeek)}
 
 Rules:
 - Full details in multiple milestones step by step you can search resources on web also
@@ -314,6 +290,7 @@ Return ONLY valid JSON in this format:
     # ---------------- Parse AI Output ----------------
     try:
         content = response.content.strip()
+        print("AI Response Content:", content)
 
         # Remove ```json ``` or ``` wrappers
         content = re.sub(r"^```json|```$", "", content, flags=re.MULTILINE).strip()
