@@ -88,7 +88,8 @@ export default function GoalCreate() {
             endDate: endDate?.toISOString().split("T")[0],
             hoursPerDay,
             daysOfWeek,
-            answers: aiAnswers,
+            aiAnswers,
+            aiQuestions
         };
 
         try {

@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi import Body, Query
 from pydantic import BaseModel
-from typing import List, Literal
+from typing import List, Literal, Dict
 from datetime import datetime, date
 from bson import ObjectId
 import os, json, re
@@ -60,6 +60,16 @@ class AISuggestRequest(BaseModel):
     endDate: date
     hoursPerDay: int
     daysOfWeek: List[str]
+
+class AISuggestRequestNew(BaseModel):
+    title: str
+    description: str
+    startDate: date
+    endDate: date
+    hoursPerDay: int
+    daysOfWeek: List[str]
+    aiQuestions: List[str]
+    aiAnswers: Dict[str, str]
 
 class AISuggestResponse(BaseModel):
     milestones: List[MilestoneResponse]
@@ -256,7 +266,7 @@ async def delete_memory(memory_id: str, current_user: dict = Depends(get_current
 
 # ---------------- AI Routes ----------------
 @router.post("/projects/goal_achiever/ai_suggest_milestones", response_model=AISuggestResponse)
-async def ai_suggest_milestones(payload: AISuggestRequest, current_user: dict = Depends(get_current_user)):
+async def ai_suggest_milestones(payload: AISuggestRequestNew, current_user: dict = Depends(get_current_user)):
     """Generate AI-suggested milestones for a goal."""
     if payload.endDate <= payload.startDate:
         raise HTTPException(status_code=400, detail="End date must be after start date")
@@ -266,7 +276,7 @@ async def ai_suggest_milestones(payload: AISuggestRequest, current_user: dict = 
 
     # Fetch relevant memory answers
     memory_docs = []
-    async for doc in db.find({"userId": user_id, "category": "goal_preferences"}):
+    async for doc in db.find({"userId": user_id}):
         memory_docs.append(doc)
     memory_text = "\n".join([f"- {m['question']}: {m['answer']}" for m in memory_docs]) or "No previous preferences stored."
 
@@ -282,6 +292,8 @@ Hours Per Day: {payload.hoursPerDay}
 Days of Week: {', '.join(payload.daysOfWeek)}
 
 User Preferences:
+{payload.aiQuestions}
+{payload.aiAnswers}
 {memory_text}
 
 Rules:
@@ -327,7 +339,7 @@ async def ai_generate_questions_dynamic(payload: AIQuestionRequest, current_user
     user_id = str(current_user["_id"])
 
     existing_answers = []
-    async for doc in db.find({"userId": user_id, "category": "goal_preferences"}):
+    async for doc in db.find({"userId": user_id}):
         existing_answers.append(doc["question"])
 
     prompt = f"""
