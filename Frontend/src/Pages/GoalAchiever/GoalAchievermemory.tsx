@@ -16,6 +16,11 @@ export default function GoalAchieverMemory() {
     const [successMsg, setSuccessMsg] = useState("");
     const [memories, setMemories] = useState<Memory[]>([]);
 
+    const [editingId, setEditingId] = useState<string | null>(null);
+    const [editQuestion, setEditQuestion] = useState("");
+    const [editAnswer, setEditAnswer] = useState("");
+
+
     // Fetch all saved memories
     const fetchMemories = async () => {
         try {
@@ -58,6 +63,25 @@ export default function GoalAchieverMemory() {
             setSuccessMsg("Error saving memory.");
         }
     };
+    const handleUpdate = async (id: string) => {
+        const res = await fetch(`${BACKEND_URL}/projects/goal_achiever/memories/${id}`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
+            body: JSON.stringify({
+                question: editQuestion,
+                answer: editAnswer
+            }),
+        });
+
+        if (!res.ok) {
+            alert("Failed to update memory");
+            return;
+        }
+
+        setEditingId(null);
+        fetchMemories();
+    };
 
     const handleDelete = async (id: string) => {
         try {
@@ -78,7 +102,7 @@ export default function GoalAchieverMemory() {
 
 
     return (
-        <div className="max-w-md mx-auto mt-10 p-6 border rounded-xl shadow space-y-6">
+        <div className="max-w-md mx-auto p-6 space-y-6">
             <h2 className="text-xl font-semibold">Add Memory</h2>
             {successMsg && <p className="text-green-600">{successMsg}</p>}
 
@@ -117,21 +141,64 @@ export default function GoalAchieverMemory() {
             {/* ---------- Display Saved Memories ---------- */}
             <ul className="space-y-3">
                 {memories.map((m) => (
-                    <li key={m._id} className="border rounded-xl p-3 bg-gray-50 flex justify-between items-start">
-                        <div>
-                            {m.category && <p className="text-sm text-gray-500">Category: {m.category}</p>}
-                            <p className="font-medium">{m.question}</p>
-                            <p className="text-gray-700">{m.answer}</p>
-                            <p className="text-xs text-gray-400">Saved at: {new Date(m.createdAt).toLocaleString()}</p>
-                        </div>
-                        <button
-                            onClick={() => handleDelete(m._id)}
-                            className="text-red-600 hover:text-red-800 font-semibold ml-4"
-                        >
-                            Delete
-                        </button>
+                    <li key={m._id} className="border rounded-xl p-3 bg-gray-50">
+                        {editingId === m._id ? (
+                            <div className="space-y-2">
+                                <input
+                                    value={editQuestion}
+                                    onChange={(e) => setEditQuestion(e.target.value)}
+                                    className="w-full border rounded px-2 py-1"
+                                />
+                                <input
+                                    value={editAnswer}
+                                    onChange={(e) => setEditAnswer(e.target.value)}
+                                    className="w-full border rounded px-2 py-1"
+                                />
+
+                                <div className="flex gap-2">
+                                    <button
+                                        onClick={() => handleUpdate(m._id)}
+                                        className="px-3 py-1 bg-green-600 text-white rounded"
+                                    >
+                                        Save
+                                    </button>
+                                    <button
+                                        onClick={() => setEditingId(null)}
+                                        className="px-3 py-1 bg-gray-300 rounded"
+                                    >
+                                        Cancel
+                                    </button>
+                                </div>
+                            </div>
+                        ) : (
+                            <div className="flex justify-between">
+                                <div>
+                                    <p className="font-medium">{m.question}</p>
+                                    <p>{m.answer}</p>
+                                </div>
+                                <div className="space-x-3">
+                                    <button
+                                        onClick={() => {
+                                            setEditingId(m._id);
+                                            setEditQuestion(m.question);
+                                            setEditAnswer(m.answer);
+                                        }}
+                                        className="text-blue-600"
+                                    >
+                                        Edit
+                                    </button>
+                                    <button
+                                        onClick={() => handleDelete(m._id)}
+                                        className="text-red-600"
+                                    >
+                                        Delete
+                                    </button>
+                                </div>
+                            </div>
+                        )}
                     </li>
                 ))}
+
             </ul>
 
         </div>

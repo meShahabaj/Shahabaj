@@ -206,6 +206,41 @@ async def get_memories(current_user: dict = Depends(get_current_user)):
             "createdAt": doc.get("createdAt").isoformat(),
         })
     return {"memories": memories}
+from pydantic import BaseModel
+
+class MemoryUpdate(BaseModel):
+    question: str
+    answer: str
+
+@router.patch("/projects/goal_achiever/memories/{memory_id}")
+async def update_memory(
+    memory_id: str,
+    payload: MemoryUpdate,
+    current_user: dict = Depends(get_current_user)
+):
+    db = mongodb.db.memory
+    user_id = str(current_user["_id"])
+
+    try:
+        oid = ObjectId(memory_id)
+    except:
+        raise HTTPException(status_code=400, detail="Invalid memory ID")
+
+    result = await db.update_one(
+        {"_id": oid, "userId": user_id},
+        {
+            "$set": {
+                "question": payload.question,
+                "answer": payload.answer,
+                "updatedAt": datetime.utcnow()
+            }
+        }
+    )
+
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Memory not found")
+
+    return {"success": True}
 
 @router.delete("/projects/goal_achiever/memories/{memory_id}")
 async def delete_memory(memory_id: str, current_user: dict = Depends(get_current_user)):

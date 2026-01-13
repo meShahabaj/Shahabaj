@@ -1,12 +1,12 @@
-import { useParams } from 'react-router-dom'
-import GoalAchieverCreate from './GoalAchieverCreate.tsx'
+import { useParams, Link, useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
-import { Link, useNavigate } from "react-router-dom"
 import axios from "axios"
-import GoalAchieverShow from './GoalAchieverShow.tsx'
-import GoalAchieverProfile from './GoalAchieverProfile.tsx'
-import GoalAchieverAnalytics from './GoalAchieverAnalytics.tsx'
-import GoalAchieverMemory from './GoalAchievermemory.tsx'
+
+import GoalAchieverCreate from "./GoalAchieverCreate.tsx"
+import GoalAchieverShow from "./GoalAchieverShow.tsx"
+import GoalAchieverAnalytics from "./GoalAchieverAnalytics.tsx"
+import GoalAchieverProfile from "./GoalAchieverProfile.tsx"
+import GoalAchieverMemory from "./GoalAchievermemory.tsx"
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL as string
 
@@ -16,23 +16,21 @@ interface User {
     email: string
 }
 
-
 export default function GoalAchieverMain() {
     const { type } = useParams<{ type: string }>()
-
     const navigate = useNavigate()
+
     const [user, setUser] = useState<User | null>(null)
     const [loading, setLoading] = useState(true)
     const [menuOpen, setMenuOpen] = useState(false)
-
+    const [sidebarOpen, setSidebarOpen] = useState(false)
 
     useEffect(() => {
         async function loadUser() {
             try {
-                const res = await fetch(
-                    `${BACKEND_URL}/projects/goal_achiever/me`,
-                    { credentials: "include" }
-                )
+                const res = await fetch(`${BACKEND_URL}/projects/goal_achiever/me`, {
+                    credentials: "include",
+                })
 
                 if (res.status === 401) {
                     navigate("/projects/goal_achiever/login")
@@ -50,13 +48,13 @@ export default function GoalAchieverMain() {
 
         loadUser()
     }, [navigate])
-    const navButton = (key: string) =>
-        `px-4 py-3 rounded-lg text-left font-medium transition
-   ${type === key
-            ? 'bg-blue-600 text-white shadow'
-            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-        }`
 
+    const navButton = (key: string) =>
+        `px-4 py-3 rounded-xl font-medium transition-all duration-200 flex items-center gap-3
+     ${type === key
+            ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg shadow-blue-500/30 scale-[1.03]"
+            : "bg-white/60 text-gray-800 hover:bg-white hover:shadow"
+        }`
 
     const handleLogout = async () => {
         await axios.post(
@@ -69,8 +67,8 @@ export default function GoalAchieverMain() {
 
     if (loading) {
         return (
-            <div className="min-h-screen flex items-center justify-center bg-gray-50">
-                <p className="text-gray-500">Checking session...</p>
+            <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 via-purple-100 to-emerald-100">
+                <p className="text-gray-700">Checking session...</p>
             </div>
         )
     }
@@ -78,73 +76,55 @@ export default function GoalAchieverMain() {
     if (!user) return null
 
     return (
-        <div className="min-h-screen">
+        <div className="min-h-screen bg-gradient-to-br from-blue-100 via-purple-100 to-emerald-100">
             {/* Header */}
-            <header className="bg-white border-b">
-                <div className="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
-
-                    {/* Brand */}
-                    <Link
-                        to="/projects/goal_achiever/analytics"
-                        className="flex flex-col hover:opacity-90 transition"
-                    >
-                        <span className="text-xl font-semibold text-gray-900 tracking-tight">
-                            Goal Achiever
-                        </span>
-                        <span className="text-xs text-gray-500">
-                            Stay focused. Achieve more.
-                        </span>
-                    </Link>
-
-                    {/* User Menu */}
-                    <div className="relative">
+            <header className="bg-white/70 backdrop-blur-md border-b border-white/40 sticky top-0 z-30 shadow-sm">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
+                    <div className="flex items-center gap-3">
                         <button
-                            onClick={() => setMenuOpen(!menuOpen)}
-                            className="flex items-center gap-3 rounded-lg px-3 py-2 hover:bg-gray-100 transition focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            onClick={() => setSidebarOpen(true)}
+                            className="md:hidden p-2 rounded-lg hover:bg-white/50"
                         >
-                            {/* Avatar */}
-                            <div className="h-9 w-9 rounded-full bg-gradient-to-br from-blue-600 to-blue-500 flex items-center justify-center text-white font-semibold text-sm">
-                                {user.username.charAt(0).toUpperCase()}
-                            </div>
-
-                            {/* Name */}
-                            <div className="hidden sm:flex flex-col text-left">
-                                <span className="text-sm font-medium text-gray-800 leading-tight">
-                                    {user.username}
-                                </span>
-                                <span className="text-xs text-gray-500">
-                                    Account
-                                </span>
-                            </div>
-
-                            {/* Chevron */}
                             <svg
-                                className={`w-4 h-4 text-gray-500 transition-transform ${menuOpen ? "rotate-180" : ""
-                                    }`}
+                                className="w-6 h-6"
                                 fill="none"
                                 stroke="currentColor"
                                 strokeWidth="2"
                                 viewBox="0 0 24 24"
                             >
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
                             </svg>
                         </button>
 
-                        {/* Dropdown */}
-                        {menuOpen && (
-                            <div className="absolute right-0 mt-2 w-48 rounded-xl bg-white border shadow-lg overflow-hidden">
-                                <div className="px-4 py-3 border-b">
-                                    <p className="text-sm font-medium text-gray-800">
-                                        {user.username}
-                                    </p>
-                                    <p className="text-xs text-gray-500 truncate">
-                                        {user.email}
-                                    </p>
-                                </div>
+                        <Link to="/projects/goal_achiever/analytics" className="flex flex-col">
+                            <span className="text-xl font-semibold text-gray-900">Goal Achiever</span>
+                            <span className="text-xs text-gray-600">Stay focused. Achieve more.</span>
+                        </Link>
+                    </div>
 
+                    <div className="relative">
+                        <button
+                            onClick={() => setMenuOpen(!menuOpen)}
+                            className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-white/50"
+                        >
+                            <div className="h-9 w-9 rounded-full bg-gradient-to-br from-blue-600 to-purple-600 text-white flex items-center justify-center font-semibold">
+                                {user.username.charAt(0).toUpperCase()}
+                            </div>
+                            <div className="hidden sm:flex flex-col text-left">
+                                <span className="text-sm font-medium">{user.username}</span>
+                                <span className="text-xs text-gray-600">Account</span>
+                            </div>
+                        </button>
+
+                        {menuOpen && (
+                            <div className="absolute right-0 mt-2 w-48 bg-white/90 backdrop-blur-md border border-white/40 rounded-xl shadow-xl overflow-hidden">
+                                <div className="px-4 py-3 border-b border-gray-200">
+                                    <p className="text-sm font-medium">{user.username}</p>
+                                    <p className="text-xs text-gray-600 truncate">{user.email}</p>
+                                </div>
                                 <button
                                     onClick={handleLogout}
-                                    className="w-full flex items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition"
+                                    className="w-full px-4 py-2 text-left text-sm text-rose-600 hover:bg-rose-50"
                                 >
                                     Logout
                                 </button>
@@ -154,56 +134,51 @@ export default function GoalAchieverMain() {
                 </div>
             </header>
 
+            {sidebarOpen && (
+                <div
+                    onClick={() => setSidebarOpen(false)}
+                    className="fixed inset-0 bg-black/40 z-40 md:hidden"
+                />
+            )}
 
-            {/* Main Layout */}
-            <div className="flex max-w-7xl mx-auto">
-                {/* Sidebar */}
-                <aside className="w-64 bg-white border-r px-4 py-6 flex flex-col gap-2">
-                    <button
-                        onClick={() => navigate('/projects/goal_achiever/analytics')}
-                        className={navButton('analytics')}
-                    >
-                        Analytics
-                    </button>
+            <div className="flex max-w-7xl mx-auto relative">
+                <aside
+                    className={`fixed md:relative z-50 top-0 left-0 h-full w-64 backdrop-blur-md border-r  px-4 py-6
+          transform transition-transform duration-300
+          ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
+          md:translate-x-0`}
+                >
+                    <div className="flex justify-between items-center mb-6 md:hidden">
+                        <span className="font-semibold">Menu</span>
+                        <button onClick={() => setSidebarOpen(false)}>✕</button>
+                    </div>
 
-                    <button
-                        onClick={() => navigate('/projects/goal_achiever/create_goal')}
-                        className={navButton('create_goal')}
-                    >
-                        Create Goal
-                    </button>
-
-                    <button
-                        onClick={() => navigate('/projects/goal_achiever/view_goals')}
-                        className={navButton('view_goals')}
-                    >
-                        View Goals
-                    </button>
-                    <button
-                        onClick={() => navigate('/projects/goal_achiever/memory')}
-                        className={navButton('memory')}
-                    >
-                        Memory
-                    </button>
-
-                    <button
-                        onClick={() => navigate('/projects/goal_achiever/profile')}
-                        className={navButton('profile')}
-                    >
-                        Profile
-                    </button>
+                    {[
+                        ["analytics", "Analytics"],
+                        ["create_goal", "Create Goal"],
+                        ["view_goals", "View Goals"],
+                        ["memory", "Memory"],
+                        ["profile", "Profile"],
+                    ].map(([key, label]) => (
+                        <button
+                            key={key}
+                            onClick={() => {
+                                navigate(`/projects/goal_achiever/${key}`)
+                                setSidebarOpen(false)
+                            }}
+                            className={navButton(key)}
+                        >
+                            {label}
+                        </button>
+                    ))}
                 </aside>
 
-
-                {/* Content */}
-                <main className="flex-1 p-6">
-                    <div>
-                        {type === 'analytics' && <GoalAchieverAnalytics />}
-                        {type === 'create_goal' && <GoalAchieverCreate />}
-                        {type === 'view_goals' && <GoalAchieverShow />}
-                        {type === 'profile' && <GoalAchieverProfile user={user} />}
-                        {type === 'memory' && <GoalAchieverMemory />}
-                    </div>
+                <main className="flex-1 p-4 sm:p-6 bg-gradient-to-br from-blue-50 via-purple-50 to-emerald-50 min-h-screen">
+                    {type === "analytics" && <GoalAchieverAnalytics />}
+                    {type === "create_goal" && <GoalAchieverCreate />}
+                    {type === "view_goals" && <GoalAchieverShow />}
+                    {type === "profile" && <GoalAchieverProfile user={user} />}
+                    {type === "memory" && <GoalAchieverMemory />}
                 </main>
             </div>
         </div>

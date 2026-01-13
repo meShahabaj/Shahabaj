@@ -170,7 +170,7 @@ export default function GoalCreate() {
             setMilestones([]);
             setHoursPerDay(1);
             setDaysOfWeek([]);
-            window.location.href = "/#/projects/goal_achiever/analytics";
+            window.location.href = "/#/projects/goal_achiever/view_goals";
         } catch (err) {
             console.error(err);
         }
