@@ -95,9 +95,7 @@ async def send_email(to: str, subject: str, html: str):
 
 
 async def get_current_user(request: Request):
-    print("Getting current user...")
     token = request.cookies.get("access_token")
-    print("Token:", token)
 
     if not token:
         raise HTTPException(status_code=401, detail="Not authenticated")
@@ -216,10 +214,10 @@ async def login(user: LoginUser, response: Response):
     response.set_cookie(
         key="access_token",
         value=token,
-        httponly=True,          # ✅ cannot access from JS
-        secure=True,           # ✅ keep False on localhost
-        samesite="none",        # ✅ allows cross-origin fetch
-        max_age=60 * 60,        # ✅ 1 hour in seconds
+        httponly=True,          
+        secure=True,          
+        samesite="none",       
+        max_age=60 * 60,       
         path="/"
     )
 

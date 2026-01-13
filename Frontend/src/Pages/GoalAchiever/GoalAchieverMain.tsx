@@ -6,6 +6,7 @@ import axios from "axios"
 import GoalAchieverShow from './GoalAchieverShow.tsx'
 import GoalAchieverProfile from './GoalAchieverProfile.tsx'
 import GoalAchieverAnalytics from './GoalAchieverAnalytics.tsx'
+import GoalAchieverMemory from './GoalAchievermemory.tsx'
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL as string
 
@@ -23,6 +24,7 @@ export default function GoalAchieverMain() {
     const [user, setUser] = useState<User | null>(null)
     const [loading, setLoading] = useState(true)
     const [menuOpen, setMenuOpen] = useState(false)
+
 
     useEffect(() => {
         async function loadUser() {
@@ -177,6 +179,12 @@ export default function GoalAchieverMain() {
                     >
                         View Goals
                     </button>
+                    <button
+                        onClick={() => navigate('/projects/goal_achiever/memory')}
+                        className={navButton('memory')}
+                    >
+                        Memory
+                    </button>
 
                     <button
                         onClick={() => navigate('/projects/goal_achiever/profile')}
@@ -194,6 +202,7 @@ export default function GoalAchieverMain() {
                         {type === 'create_goal' && <GoalAchieverCreate />}
                         {type === 'view_goals' && <GoalAchieverShow />}
                         {type === 'profile' && <GoalAchieverProfile user={user} />}
+                        {type === 'memory' && <GoalAchieverMemory />}
                     </div>
                 </main>
             </div>

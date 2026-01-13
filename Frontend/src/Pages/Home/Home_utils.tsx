@@ -117,7 +117,7 @@ export const projects: Project[] = [
   {
     title: "Goal Achiever",
     pic: "goal-achiever.png",
-    address: "/projects/goal_achiever",
+    address: "/projects/goal_achiever/analytics",
   },
 
 ];

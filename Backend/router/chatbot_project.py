@@ -50,9 +50,6 @@ def retrieve_context(query: str):
     D, I = faiss_index.search(q_emb, 1)
     
     context = texts[I[0][0]]
-    # Mask personal info
-    context = context.replace("Shahabaj Khan", "ADMIN_NAME")
-    context = context.replace("Shahabaj", "ADMIN_NAME")
 
     return context
 
@@ -83,7 +80,7 @@ def chat_req(query, context):
     ]
     response = llm.invoke(messages)
     # Unmask before returning
-    answer = response.content.replace("ADMIN_NAME", "Shahabaj Khan").replace("ADMIN_NAME", "Shahabaj")
+    answer = response.content
     return answer
 
 # ----------- ROUTE ------------------
