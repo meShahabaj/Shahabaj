@@ -1,16 +1,12 @@
 from fastapi import APIRouter, Depends, HTTPException, Response, Request
 from pydantic import BaseModel, EmailStr
 from datetime import datetime, timedelta
-from typing import Optional
 from jose import jwt, JWTError
 from passlib.context import CryptContext
 from DB import mongodb
 import random
 import os
 import hashlib
-from email.message import EmailMessage
-import aiosmtplib
-import resend
 
 router = APIRouter()
 
@@ -20,14 +16,15 @@ ALGORITHM = os.getenv("ALGORITHM")
 ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES"))
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-resend.api_key = os.getenv("RESEND_API_KEY")
+import httpx
 
-FROM_EMAIL = "GoalAchiever<onboarding@resend.dev>"
+BREVO_API_KEY = os.getenv("BREVO_API_KEY")
 
-# ENV = os.getenv("ENV", "development")
-# IS_PROD = ENV == "production"
-# secure = IS_PROD
-# samesite = "none" if IS_PROD else "lax"
+FROM_EMAIL = {
+    "name": "GoalAchiever",
+    "email": "noreply@brevo.com"
+}
+
 
 # ------------------ SCHEMAS ------------------
 class SignupUser(BaseModel):
@@ -68,23 +65,39 @@ def create_access_token(data: dict):
     return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
 
 async def send_email(to: str, subject: str, html: str):
-    try:
-        resend.Emails.send({
-            "from": FROM_EMAIL,
-            "to": to,
-            "subject": subject,
-            "html": html,
-        })
-    except Exception as e:
-        print("Email send failed:", e)
-        raise HTTPException(
-            status_code=500,
-            detail="Failed to send email"
-        )
+    if not BREVO_API_KEY:
+        raise RuntimeError("BREVO_API_KEY missing")
+
+    url = "https://api.brevo.com/v3/smtp/email"
+
+    headers = {
+        "api-key": BREVO_API_KEY,
+        "accept": "application/json",
+        "content-type": "application/json",
+    }
+
+    payload = {
+        "sender": {
+            "name": "GoalAchiever",
+            "email": os.getenv("BREVO_SENDER_EMAIL")
+        },
+        "to": [{"email": to}],
+        "subject": subject,
+        "htmlContent": html
+    }
+
+    async with httpx.AsyncClient(timeout=15) as client:
+        resp = await client.post(url, headers=headers, json=payload)
+
+        if resp.status_code != 201:
+            raise HTTPException(status_code=500, detail="Email provider rejected request")
+
 
 
 async def get_current_user(request: Request):
+    print("Getting current user...")
     token = request.cookies.get("access_token")
+    print("Token:", token)
 
     if not token:
         raise HTTPException(status_code=401, detail="Not authenticated")
@@ -108,7 +121,6 @@ async def get_current_user(request: Request):
 # ------------------ AUTH ROUTES ------------------
 @router.post("/projects/goal_achiever/signup")
 async def signup(user: SignupUser):
-    print("Signup request received for:", user.email)
     db = mongodb.db.users
 
     existing = await db.find_one({"email": user.email})
@@ -116,6 +128,7 @@ async def signup(user: SignupUser):
 
     otp = generate_otp()
     now = datetime.utcnow()
+
 
     # ✅ CASE 1: User exists but NOT verified → resend OTP
     if existing and not existing.get("otpVerified"):
@@ -203,12 +216,13 @@ async def login(user: LoginUser, response: Response):
     response.set_cookie(
         key="access_token",
         value=token,
-        httponly=True,     # ❗ prevents JS access
-        secure=False,      # True in production (HTTPS)
-        samesite="lax",
-        max_age=60 * 60 * 60 * 100,   # 1 hour
+        httponly=True,          # ✅ cannot access from JS
+        secure=True,           # ✅ keep False on localhost
+        samesite="none",        # ✅ allows cross-origin fetch
+        max_age=60 * 60,        # ✅ 1 hour in seconds
         path="/"
     )
+
 
     return {
         "success": True,

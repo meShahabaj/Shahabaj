@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL as string;
 
@@ -22,9 +23,32 @@ const SignupWithOTP: React.FC = () => {
         password: "",
         confirmPassword: "",
     });
+    const navigate = useNavigate()
 
+    useEffect(() => {
+        async function loadUser() {
+                const res = await fetch(
+                    `${BACKEND_URL}/projects/goal_achiever/me`,
+                    { credentials: "include" }
+                )
+
+                if (res.status === 401) {
+                    navigate("/projects/goal_achiever/login")
+                    return
+                }
+
+                const data = await res.json()
+                if(data.user){
+                    navigate("/projects/goal_achiever/analytics")
+            }
+            
+        }
+
+        loadUser()
+    }, [navigate])
     /* ---------------- Timer ---------------- */
     useEffect(() => {
+
         if (!resendTimer) return;
         const timer = setTimeout(() => setResendTimer((t) => t - 1), 1000);
         return () => clearTimeout(timer);
@@ -110,7 +134,7 @@ const SignupWithOTP: React.FC = () => {
             if (!res.ok) throw new Error(data.detail || data.message);
 
             setSuccess("Account verified successfully 🎉");
-            setTimeout(() => (window.location.href = "/#/login"), 1500);
+            setTimeout(() => (window.location.href = "/#/projects/goal_achiever/analytics"), 1500);
         } catch (err: any) {
             setError(err.message || "Invalid OTP");
         } finally {

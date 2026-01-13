@@ -21,4 +21,3 @@ pydantic[email]>=2.12.4,
 pymongo>=4.15.5,
 python-jose[cryptography]>=3.5.0,
 uvicorn>=0.38.0,
-resend>=2.19.0

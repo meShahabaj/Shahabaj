@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL as string;
 
 const LoginPage = () => {
@@ -7,6 +8,30 @@ const LoginPage = () => {
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
+
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        async function loadUser() {
+                const res = await fetch(
+                    `${BACKEND_URL}/projects/goal_achiever/me`,
+                    { credentials: "include" }
+                )
+
+                if (res.status === 401) {
+                    navigate("/projects/goal_achiever/login")
+                    return
+                }
+
+                const data = await res.json()
+                if(data.user){
+                    navigate("/projects/goal_achiever/analytics")
+            }
+            
+        }
+
+        loadUser()
+    }, [navigate])
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -22,7 +47,7 @@ const LoginPage = () => {
             );
 
             if (response.data.success) {
-                window.location.href = "/#/projects/goal_achiever";
+                window.location.href = "/#/projects/goal_achiever/analytics";
             } else {
                 setError("Login failed");
             }
@@ -81,7 +106,7 @@ const LoginPage = () => {
                     </button>
                 </form>
                 <div className="mt-4 text-center text-gray-600">
-                    <a href="/forgot-password" className="text-blue-500 hover:underline">
+                    <a href="/#/projects/goal_achiever/login/forgot-password" className="text-blue-500 hover:underline">
                         Forgot Password?
                     </a>
                 </div>

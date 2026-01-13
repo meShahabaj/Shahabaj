@@ -171,7 +171,7 @@ export default function GoalCreate() {
         setStartDate(null);
         setEndDate(null);
         setMilestones([]);
-        window.location.href = "/#/projects/goal_achiever";
+        window.location.href = "/#/projects/goal_achiever/analytics";
     };
 
     /* ---------- UI ---------- */

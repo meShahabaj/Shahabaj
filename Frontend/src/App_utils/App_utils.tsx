@@ -30,6 +30,7 @@ export const App_utils: App_utils_items[] = [
   { path: "/projects/goal_achiever/:type", element: lazy(() => import("../Pages/GoalAchiever/GoalAchieverMain.tsx")) },
   { path: "/projects/goal_achiever/signup", element: lazy(() => import("../Pages/GoalAchiever/Auth/Signup.tsx")) },
   { path: "/projects/goal_achiever/login", element: lazy(() => import("../Pages/GoalAchiever/Auth/Login.tsx")) },
+  { path: "/projects/goal_achiever/login/forgot-password", element: lazy(() => import("../Pages/GoalAchiever/Auth/ForgotPassword.tsx")) },
 ];
 
 export const contacts: Contact[] = [

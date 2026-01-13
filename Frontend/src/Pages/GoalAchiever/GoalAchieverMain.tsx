@@ -83,7 +83,7 @@ export default function GoalAchieverMain() {
 
                     {/* Brand */}
                     <Link
-                        to="/projects/goal_achiever"
+                        to="/projects/goal_achiever/analytics"
                         className="flex flex-col hover:opacity-90 transition"
                     >
                         <span className="text-xl font-semibold text-gray-900 tracking-tight">

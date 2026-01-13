@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import List
+from typing import List, Literal
 from datetime import datetime
 from fastapi import APIRouter, Depends, HTTPException
 from .goal_achiever_auth import get_current_user
@@ -21,6 +21,8 @@ class GoalCreate(BaseModel):
     startDate: datetime
     endDate: datetime
     milestones: List[MilestoneCreate]
+    hoursPerDay: int
+    daysOfWeek: List[Literal["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]]
 
 @router.post("/projects/goal_achiever/create_goal")
 async def create_goal(
@@ -28,10 +30,6 @@ async def create_goal(
     current_user: dict = Depends(get_current_user)
 ):
     db = mongodb.db.goals
-
-    # ------------------ MILESTONE VALIDATION ------------------
-    previous_end = data.startDate
-
 
     # ------------------ DOCUMENT ------------------
     now = datetime.utcnow()
@@ -58,7 +56,7 @@ async def create_goal(
         "updatedAt": now,
     }
 
-    result = await db.insert_one(goal_doc)
+    await db.insert_one(goal_doc)
 
     # ------------------ RESPONSE ------------------
     return {
