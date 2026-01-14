@@ -33,7 +33,7 @@ const SignupWithOTP: React.FC = () => {
                 )
 
                 if (res.status === 401) {
-                    navigate("/projects/goal_achiever/login")
+                    navigate("/projects/goal_achiever/signup")
                     return
                 }
 

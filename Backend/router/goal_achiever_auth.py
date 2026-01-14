@@ -88,12 +88,16 @@ async def send_email(to: str, subject: str, html: str):
     }
 
     async with httpx.AsyncClient(timeout=15) as client:
-        resp = await client.post(url, headers=headers, json=payload)
 
-        if resp.status_code != 201:
-            raise HTTPException(status_code=500, detail="Email provider rejected request")
+        response = await client.post(url, headers=headers, json=payload)
 
-
+        if response.status_code != 201:
+            print("Status:", response.status_code)
+            print("Response:", response.text)
+            raise HTTPException(
+                status_code=500,
+                detail=response.text,
+            )
 
 async def get_current_user(request: Request):
     token = request.cookies.get("access_token")
