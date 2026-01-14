@@ -65,6 +65,7 @@ def create_access_token(data: dict):
     return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
 
 async def send_email(to: str, subject: str, html: str):
+    BREVO_API_KEY = os.getenv("BREVO_API_KEY")
     if not BREVO_API_KEY:
         raise RuntimeError("BREVO_API_KEY missing")
 

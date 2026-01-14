@@ -3,7 +3,7 @@ import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import { Suspense, FC } from "react";
 
 // local import
-import { WakeServer } from "./App_utils/WakeServer.js";
+import { WakeServer } from "./App_utils/WakeServer.tsx";
 import Loading from "./App_utils/Loading.tsx";
 import { App_utils } from "./App_utils/App_utils.tsx";
 
