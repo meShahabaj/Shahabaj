@@ -83,7 +83,7 @@ export const projects: Project[] = [
   {
     title: "Anixo: IT Solutions",
     pic: "anixo.png",
-    address: "https://anixo.onrender.com/",
+    address: "https://anixo.vercel.app/",
   },
   {
     title: "Image Editor",
