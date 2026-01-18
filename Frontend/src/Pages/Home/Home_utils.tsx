@@ -75,7 +75,16 @@ export const courses: string[] = [
 ======================= */
 
 export const projects: Project[] = [
-
+  {
+    title: "Techis Talk: ",
+    pic: "Techis_talk.png",
+    address: "https://techistalk.vercel.app/",
+  },
+  {
+    title: "Anixo: IT Solutions",
+    pic: "anixo.png",
+    address: "https://anixo.onrender.com/",
+  },
   {
     title: "Image Editor",
     pic: "Image_editor.jpg",
@@ -85,10 +94,6 @@ export const projects: Project[] = [
     title: "Face Extractor From Image",
     pic: "Face_locator.jpg",
     address: "/projects/face_extractor",
-  }, {
-    title: "Techis Talk: ",
-    pic: "Techis_talk.png",
-    address: "https://techistalk.onrender.com/",
   },
   {
     title: "AI (RAG) Chat Bot: About Me",
@@ -109,11 +114,7 @@ export const projects: Project[] = [
     pic: "Salary_prediction_img.jpeg",
     address: "/projects/salary_predictor",
   },
-  {
-    title: "Anixo: IT Solutions",
-    pic: "anixo.png",
-    address: "https://anixo.onrender.com/",
-  },
+
   {
     title: "Goal Achiever",
     pic: "goal-achiever.png",
